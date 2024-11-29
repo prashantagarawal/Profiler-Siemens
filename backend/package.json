@@ -1,0 +1,31 @@
+{
+  "name": "profiler",
+  "version": "1.0.0",
+  "description": "profiler application",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "LTI",
+  "license": "ISC",
+  "dependencies": {
+    "@sap/xsenv": "^1.2.9",
+    "@sap/xssec": "^2.1.15",
+    "axios": "^1.7.2",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.0.0",
+    "csv2json": "^2.0.2",
+    "csvtojson": "^2.0.10",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-jwt": "^5.3.1",
+    "fs-extra": "^9.1.0",
+    "json-2-csv": "^3.14.4",
+    "mongoose": "^5.13.14",
+    "nodemon": "^2.0.15",
+    "passport": "^0.4.1",
+    "underscore": "^1.13.1",
+    "winston": "^3.3.3",
+    "xlsx-to-json": "^0.3.0"
+  }
+}

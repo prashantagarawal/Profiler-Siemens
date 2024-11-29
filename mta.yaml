@@ -1,0 +1,27 @@
+ID: Profiler2-Siemens
+_schema-version: '3.1'
+version: 1.0.0
+
+modules:
+  - name: frontend-app
+    type: nodejs
+    path: frontend
+    parameters:
+      memory: 256M
+    requires:
+      - name: backend-app
+
+  - name: backend-app
+    type: nodejs
+    path: backend
+    parameters:
+      memory: 256M
+    requires:
+      - name: mongodb-service-v1
+
+resources:
+  - name: mongodb-service-v1
+    type: org.cloudfoundry.user-provided-service
+    parameters:
+      credentials: 
+        uri: db_url

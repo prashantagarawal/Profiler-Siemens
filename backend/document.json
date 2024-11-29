@@ -1,0 +1,497 @@
+{
+    "document_id": "menu_side_panel_and_overview_tabs",
+    "__v": 0,
+    "cust_id": "001",
+    "industry": "cpg",
+    "lob": "menu",
+    "menu": "side_panel_and_overview",
+    "tab": "tabs",
+    "module_details": {
+        "dashboards": {
+            "label": "Dashboard",
+            "id_side_menu": "dashbard_side_menu",
+            "html": "dashboard.html",
+            "flag": true
+        },
+        "ptps": {
+            "label": "Source To Pay",
+            "id_overview_main_menu": "tab_ptp",
+            "id_overview_sub_menu": "tab-ptp-overview",
+            "id_side_menu": "ptp_main_menu",
+            "organization_structure": {
+                "label": "Organization Structure",
+                "id_overview_menu": "tab-ptp-os",
+                "id_side_menu": "ptp_org_struct_main_menu",
+                "html": "stp_org_details.html",
+                "flag": false,
+                "document_id_details_tab": ["ptp_org_structure_pur_org","ptp_org_structure_storage_location",
+                "ptp_org_structure_plant",
+            "ptp_org_structure_pur_group"],
+                "document_id_overview_tab": ["ptp_overview_org_structure"]
+            },
+            "master_data": {
+                "label": "Master Data",
+                "id_overview_menu": "tab-ptp-md",
+                "id_side_menu": "ptp_master_data_main_menu",
+                "html": "ptp_master_data.html",
+                "flag": false,
+                "document_id_details_tab": ["ptp_master_data_info_record","ptp_master_data_vendor_master",
+            "ptp_master_data_material_master",
+        "ptp_master_data_source_list"],
+                "document_id_overview_tab": ["ptp_overview_master_data"]
+            },
+            "sourcing_and_contracts": {
+                "label": "Sourcing and Contracts",
+                "id_overview_menu": "tab-ptp-sc",
+                "id_side_menu": "ptp_sourc_contract_main_menu",
+                "html": "sourcing_contract.html",
+                "flag": false,
+                "document_id_details_tab": ["ptp_sourcing_contract_sourcing"],
+                "document_id_overview_tab": ["ptp_overview_sourcing_contract"]
+            },
+            "operational_procurement": {
+                "label": "Operational Procurement",
+                "id_overview_menu": "tab-ptp-op",
+                "id_side_menu": "ptp_po_proc_main_menu",
+                "html": "p2p_op_proc.html",
+                "flag": false,
+                "document_id_details_tab": ["ptp_operational_procurement_external_service",
+            "ptp_operational_procurement_procurement_for_stock",
+        "ptp_operational_procurement_optimized_procurement",
+    "ptp_operational_procurement_direct_consumption",
+"ptp_operational_procurement_special_procurement"],
+                "document_id_overview_tab": ["ptp_overview_operational_procurement"]
+            },
+            "inventory_management": {
+                "label": "Inventory Management",
+                "id_overview_menu": "tab-ptp-inv",
+                "id_side_menu": "ptp_inv_mang_main_menu",
+                "html": "ptp_inventory_management.html",
+                "flag": false,
+                "document_id_details_tab": ["ptp_inventory_management_inbound_logistics_internal_movements_outbound_logistics_physical_inventory"],
+                "document_id_overview_tab": ["ptp_overview_inventory_management"]
+            },
+            "invoice_verification": {
+                "label": "Invoice Verifictaion",
+                "id_overview_menu": "tab-ptp-invoice",
+                "id_side_menu": "ptp_invoice_verif_main_menu",
+                "html": "ptp_invoice_verification.html",
+                "flag": false,
+                "document_id_details_tab": ["ptp_invoice_verification_debit_credit_memo_subsequent_dr_cr_automatic_settlements"],
+                "document_id_overview_tab": ["ptp_overview_invoice_verification"]
+            },
+            "html": "",
+            "flag": false
+        },
+        "otcs": {
+            "label": "Order To Cash",
+            "id_overview_main_menu": "tab_otc",
+            "id_overview_sub_menu": "tab_otc_overview_button",
+            "id_side_menu": "otc_main_menu",
+            "org_structure": {
+                "label": "Organization Structure",
+                "id_overview_menu": "button-orgstruc",
+                "id_side_menu": "",
+                "html": "bussproc_ptp.html",
+                "flag": false,
+                "document_id_details_tab": [],
+                "document_id_overview_tab": ["otc_org_structure_overview"]
+            },
+            "master_data": {
+                "label": "Master Data",
+                "id_overview_menu": "button-masterdata",
+                "id_side_menu": "",
+                "html": "bussproc_ptp.html",
+                "flag": false,
+                "document_id_details_tab": [],
+                "document_id_overview_tab": ["otc_master_data_overview"]
+            },
+            "presales_processing": {
+                "label": "Presales Processing",
+                "id_overview_menu": "button-pre",
+                "id_side_menu": "presales_side_menu",
+                "html": "presales_tab.html",
+                "flag": false,
+                "document_id_details_tab": [
+                    "otc_presales_processing_inquiry", 
+                    "otc_presales_processing_quotation"
+                ],
+                "document_id_overview_tab": ["otc_overview_presales_processing"]
+            },
+            "order_management": {
+                "label": "Order Management",
+                "id_overview_menu": "button-om",
+                "id_side_menu": "otc_om_side_menu",
+                "html": "otc_om_tab.html",
+                "flag": false,
+                "document_id_details_tab": [
+                    "otc_order_management_contract",
+                    "otc_order_management_order",
+                    "otc_order_management_order_without_charge",
+                    "otc_order_management_scheduling_agreement",
+                    "otc_order_management_scheduling_agreement_with_ext"
+                ],
+                "document_id_overview_tab": ["otc_overview_order_management"]
+            },
+            "order_fulfillment": {
+                "label": "Order Fulfillment",
+                "id_overview_menu": "button-del",
+                "id_side_menu": "otc_fullfillment_side_menu",
+                "html": "otc_delivery_tab.html",
+                "flag": false,
+                "document_id_details_tab": [
+                    "otc_order_fulfillment_intercom_stock_transfer",
+                    "otc_order_fulfillment_standard_delivery", 
+                    "otc_order_fulfillment_returns_delivery", 
+                    "otc_order_fulfillment_delivery_wo_reference"
+                ],
+                "document_id_overview_tab": ["otc_overview_order_fulfillment"]
+            },
+            "billing": {
+                "label": "Billing",
+                "id_overview_menu": "button-bill",
+                "id_side_menu": "otc_billing_side_menu",
+                "html": "otc_billing_tab.html",
+                "flag": false,
+                "document_id_details_tab": [
+                    "otc_billing_invoices",
+                    "otc_billing_proforma_invoice", 
+                    "otc_billing_intercompany",
+                    "otc_billing_invoice_list",
+                    "otc_billing_debit_memos"
+                ],
+                "document_id_overview_tab": ["otc_overview_billing"]
+            },
+            "reverse_logistics": {
+                "label": "Reverse Logistics",
+                "id_overview_menu": "button-rev",
+                "id_side_menu": "otc_logistic_side_menu",
+                "html": "otc_logistic_tab.html",
+                "flag": false,
+                "document_id_details_tab": [
+                    "otc_reverse_logistics_credit_memo_request", 
+                    "otc_reverse_logistics_returns"
+                ],
+                "document_id_overview_tab": ["otc_overview_reverse_logistics"]
+            },
+            "html": "",
+            "flag": false
+        },
+        "ptds": {
+            "label": "PTD",
+            "id_overview_main_menu": "tab_ptd",
+            "id_overview_sub_menu": "tab-ptd-overview",
+            "id_side_menu": "ptd_main_menu",
+            "master_data": {
+                "label": "Master Data",
+                "id_overview_menu": "tab-ptd-md",
+                "id_side_menu": "ptd_master_data",
+                "html": "ptd_master_data.html",
+                "flag": false,
+                "document_id_details_tab": [
+                    "ptd_master_data_manufacturing_unit",
+                    "ptd_master_data_routings",
+                    "ptd_master_data_vc_master_data",
+                    "ptd_master_data_product_master",
+                    "ptd_master_data_master_recipe",
+                    "ptd_master_data_product_structure"
+                ],
+                "document_id_overview_tab": ["ptd_overview_master_data"]
+            },
+            "planning_process": {
+                "label": "Planning Process",
+                "id_overview_menu": "tab-ptd-pp",
+                "id_side_menu": "ptd_planning_process",
+                "html": "ptd_planning_process.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "manufacturing_execution": {
+                "label": "Manufacturing Execution",
+                "id_overview_menu": "tab-ptd-me",
+                "id_side_menu": "ptd_manufac_exec",
+                "html": "ptd_manufacturing_execution.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "manufacturing_integration": {
+                "label": "Manufacturing Integration",
+                "id_overview_menu": "tab-ptd-mi",
+                "id_side_menu": "ptd_manufac_integration",
+                "html": "ptd_manufacturing_integration.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "html": "",
+            "flag": false
+        },
+        "eams": {
+            "label": "EAM",
+            "id_overview_main_menu": "tab_eam",
+            "id_overview_sub_menu": "tab_overview_eam",
+            "id_side_menu": "eam_main_menu",
+            "maint_org_struc_master_data": {
+                "label": "Maintainance Org Structure and Master Data",
+                "id_overview_menu": "tab-eam-master-data",
+                "id_side_menu": "eam_main_master_menu",
+                "html": "eam_main_master_data.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "maint_work_management": {
+                "label": "Maintenance Work Management",
+                "id_overview_menu": "tab-eam-main-work",
+                "id_side_menu": "eam_work_mana_menu",
+                "html": "eam_main_work_mang.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "turnaround_shut_maint": {
+                "label": "Turnaround Shutdown Maintenanace",
+                "id_overview_menu": "tab-eam-turnaround",
+                "id_side_menu": "eam_turnaorund_menu",
+                "html": "eam_turnaround.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "monitor_maint": {
+                "label": "Monitor Maintenance",
+                "id_overview_menu": "tab-eam-monitor",
+                "id_side_menu": "eam_monitor_main_menu",
+                "html": "eam_monitor_main.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "html": "",
+            "flag": false
+        },
+        "ps": {
+            "label": "PS",
+            "id_overview_main_menu": "tab_ps",
+            "id_overview_sub_menu": "tab_ps_overview",
+            "id_side_menu": "ps_main_menu",
+            "project_presales": {
+                "label": "Project Presales/Sales",
+                "id_overview_menu": "tab-ps-pps",
+                "id_side_menu": "ps_project_presales",
+                "html": "ps_project_presales_sales.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "project_planning": {
+                "label": "Project Planning",
+                "id_overview_menu": "tab-ps-pp",
+                "id_side_menu": "ps_project_planning",
+                "html": "ps_project_planning.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "project_execution_manu": {
+                "label": "Project Execution Manufacturing",
+                "id_overview_menu": "tab-ps-pem",
+                "id_side_menu": "ps_project_execution_manu",
+                "html": "ps_project_execution_manu.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "project_financial_management": {
+                "label": "Project Financial Mangement",
+                "id_overview_menu": "tab-ps-pfm",
+                "id_side_menu": "ps_project_financials",
+                "html": "ps_project_financials.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "project_forecast": {
+                "label": "Project Forecast",
+                "id_overview_menu": "tab-ps-pf",
+                "id_side_menu": "",
+                "html": "otc_delivery_tab.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "project_addon": {
+                "label": "Project Addon",
+                "id_overview_menu": "tab-ps-pa",
+                "id_side_menu": "",
+                "html": "otc_billing_tab.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "html": "",
+            "flag": false
+        },
+        "rtrs": {
+            "label": "Record To Report",
+            "id_overview_main_menu": "tab_rtr",
+            "id_overview_sub_menu": "tab_overview_rtr",
+            "id_side_menu": "rtr_main_menu",
+            "org_structure": {
+                "label": "Organization Structure",
+                "id_overview_menu": "tab-rtr-os",
+                "id_side_menu": "rtr_org_structure_menu",
+                "html": "rtr_org_struct_tab.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "financial_acc_controlling": {
+                "label": "Financial Accounting & Controlling",
+                "id_overview_menu": "tab-rtr-fi",
+                "id_side_menu": "rtr_financ_acc_menu",
+                "html": "rtr_fian_acc.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "controlling": {
+                "label": "Controlling",
+                "id_overview_menu": "",
+                "id_side_menu": "rtr_contr_menu",
+                "html": "rtr_controlling_tab.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "treasury": {
+                "label": "Treasury",
+                "id_overview_menu": "tab-rtr-tr",
+                "id_side_menu": "rtr_treasury_menu",
+                "html": "rtr_treasury_tab.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "others": {
+                "label": "Others",
+                "id_overview_menu": "",
+                "id_side_menu": "rtr_others_menu",
+                "html": "rtr_others_tab.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "html": "",
+            "flag": false
+        },
+        "hcms": {
+            "label": "Recruit To Retire",
+            "id_overview_main_menu": "tab_hcm",
+            "id_overview_sub_menu": "tab_hcm_overview",
+            "id_side_menu": "hcm_main_menu",
+            "hcm_structure": {
+                "label": "HCM Structure",
+                "id_overview_menu": "tab_hcm_struct",
+                "id_side_menu": "hcm_org_structure",
+                "html": "hcm_org_structure.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "master_data": {
+                "label": "Master Data",
+                "id_overview_menu": "tab_hcm_md",
+                "id_side_menu": "tab_hcm_md",
+                "html": "hcm_master_data.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "personnel_admin": {
+                "label": "Personnel Administration",
+                "id_overview_menu": "tab_hcm_per_admin",
+                "id_side_menu": "hcm_per_admin",
+                "html": "hcm_per_admin.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "time_management": {
+                "label": "Time Management",
+                "id_overview_menu": "tab_hcm_tm",
+                "id_side_menu": "hcm_time_mgt",
+                "html": "hcm_time_mgt.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "payroll": {
+                "label": "Payroll",
+                "id_overview_menu": "tab_hcm_pay",
+                "id_side_menu": "tab_hcm_pay",
+                "html": "hcm_payroll.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "benefit": {
+                "label": "Benefit",
+                "id_overview_menu": "tab_hcm_ben",
+                "id_side_menu": "tab_hcm_ben",
+                "html": "hcm_benefits.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "cats": {
+                "label": "CATS",
+                "id_overview_menu": "tab_hcm_cats",
+                "id_side_menu": "tab_hcm_cats",
+                "html": "hcm_cats.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "travel_management": {
+                "label": "Travel Management",
+                "id_overview_menu": "tab_hcm_trvl_mgt",
+                "id_side_menu": "tab_hcm_trvl_mgt",
+                "html": "hcm_travel_mgt.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "talent_management": {
+                "label": "Talent Management",
+                "id_overview_menu": "tab_hcm_talent_mgt",
+                "id_side_menu": "tab_hcm_talent",
+                "html": "hcm_talent.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "compensation_admin": {
+                "label": "Compensation Administration",
+                "id_overview_menu": "tab_hcm_ca",
+                "id_side_menu": "tab_hcm_compensation_administration",
+                "html": "hcm_comp_admin.html",
+                "flag": false,
+                "document_id_details_tab": "",
+                "document_id_overview_tab": ""
+            },
+            "html": "",
+            "flag": false
+        },
+        "custom_developments": {
+            "label": "Custom Objects",
+            "id_overview_main_menu": "",
+            "id_overview_sub_menu": "",
+            "id_side_menu": "custom_developments",
+            "html": "",
+            "flag": false
+        }
+    }
+}
