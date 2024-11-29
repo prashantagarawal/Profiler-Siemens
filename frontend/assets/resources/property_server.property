@@ -1,0 +1,15 @@
+var url = "/profilerservice/generic-route?";
+var eamUrlCoverage= "/profilerservice/eam-route/coverage?";
+var eamUrlDataQuality= "/profilerservice/eam-route/dataquality?";
+var eamUrlTimeAgility= "/profilerservice/eam-route/timeagility?";
+var bussprocUrl = "bussproc_ptp.html"
+var treeUrl = "/profilerservice/generic-route/treeview?";
+var masterUrl = "/profilerservice/master_algo-route/master_algo?";
+var masterUrlGetFileCount = "/profilerservice/master_algo-route/master_algo_file_count?";
+var loginUrl = "/profilerservice/master_algo-route/login?";
+var user_url = "https://profiler-2-router-demo-lti.cfapps.eu10.hana.ondemand.com/user-api/currentUser";
+
+var genai_p2p_lead_cycle_time_url = "/profilerservice/genai-route/p2p_lead_cycle_time?"
+var genai_rtr_suggestions_url = "/profilerservice/genai-route/rtr_suggestions?"
+var genai_otc_order_processing_suggestions_url = "/profilerservice/genai-route/otc_order_processing_suggestions?"
+var genai_otc_order_processing_suggestions_order_wise_url = "/profilerservice/genai-route/otc_order_processing_suggestions_orderwise?"

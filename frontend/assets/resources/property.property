@@ -1,0 +1,35 @@
+
+var fe_url = "http://localhost:3011/"
+var url = "http://localhost:3001/profilerservice/generic-route?";
+var masterUrl = "http://localhost:3001/profilerservice/master_algo-route/master_algo?";
+var loginUrl = "http://localhost:3001/profilerservice/master_algo-route/login?";
+var masterUrlGetFileCount = "http://localhost:3001/profilerservice/master_algo-route/master_algo_file_count?";
+var checkCsvUrl = "http://localhost:3001/profilerservice/master_algo-route/check_csv?";
+var checkCsvCount = "http://localhost:3001/profilerservice/master_algo-route/check_csv_temp?";
+var csvCountForJSFiles = "http://localhost:3001/profilerservice/master_algo-route/csv_count_for_js_files?";
+var user_url = "https://profiler-2-app-lti.cfapps.eu10.hana.ondemand.com/user-api/currentUser";
+
+/*
+var fe_url = "https://port3011-workspaces-ws-t5n9q.eu10.applicationstudio.cloud.sap/"
+var url = "https://port3001-workspaces-ws-t5n9q.eu10.applicationstudio.cloud.sap/profilerservice/generic-route?";
+var masterUrl = "https://port3001-workspaces-ws-t5n9q.eu10.applicationstudio.cloud.sap/profilerservice/master_algo-route/master_algo?";
+var loginUrl = "https://port3001-workspaces-ws-t5n9q.eu10.applicationstudio.cloud.sap/profilerservice/master_algo-route/login?";
+var masterUrlGetFileCount = "https://port3001-workspaces-ws-t5n9q.eu10.applicationstudio.cloud.sap/profilerservice/master_algo-route/master_algo_file_count?";
+var checkCsvUrl = "https://port3001-workspaces-ws-t5n9q.eu10.applicationstudio.cloud.sap/profilerservice/master_algo-route/check_csv?";
+var checkCsvCount = "https://port3001-workspaces-ws-t5n9q.eu10.applicationstudio.cloud.sap/profilerservice/master_algo-route/check_csv_temp?";
+var csvCountForJSFiles = "https://port3001-workspaces-ws-t5n9q.eu10.applicationstudio.cloud.sap/profilerservice/master_algo-route/csv_count_for_js_files?";
+var user_url = "https://profiler-2-app-lti.cfapps.eu10.hana.ondemand.com/user-api/currentUser";
+
+
+// Cloud url
+ 
+var fe_url = "https://larsen---toubro-infotech-ltd-dev-iptools-frontend-app.cfapps.eu10.hana.ondemand.com/"
+var url = "https://larsen---toubro-infotech-ltd-dev-iptools-backend-app.cfapps.eu10.hana.ondemand.com/profilerservice/generic-route?";
+var masterUrl = "https://larsen---toubro-infotech-ltd-dev-iptools-backend-app.cfapps.eu10.hana.ondemand.com/profilerservice/master_algo-route/master_algo?";
+var loginUrl = "https://larsen---toubro-infotech-ltd-dev-iptools-backend-app.cfapps.eu10.hana.ondemand.com/profilerservice/master_algo-route/login?";
+var masterUrlGetFileCount = "https://larsen---toubro-infotech-ltd-dev-iptools-backend-app.cfapps.eu10.hana.ondemand.com/profilerservice/master_algo-route/master_algo_file_count?";
+var checkCsvUrl = "https://larsen---toubro-infotech-ltd-dev-iptools-backend-app.cfapps.eu10.hana.ondemand.com/profilerservice/master_algo-route/check_csv?";
+var checkCsvCount = "https://larsen---toubro-infotech-ltd-dev-iptools-backend-app.cfapps.eu10.hana.ondemand.com/profilerservice/master_algo-route/check_csv_temp?";
+var csvCountForJSFiles = "https://larsen---toubro-infotech-ltd-dev-iptools-backend-app.cfapps.eu10.hana.ondemand.com/profilerservice/master_algo-route/csv_count_for_js_files?";
+var user_url = "https://profiler-2-app-lti.cfapps.eu10.hana.ondemand.com/user-api/currentUser";
+*/ 

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Language" content="en" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Profiler 2.0</title>
+    <link rel="shortcut icon" href="./assets/images/LTI_favicon.png" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Wide selection of cards with multiple styles, borders, actions and hover effects."
+    />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <link href="./main.css" rel="stylesheet" />
+  </head>
+  <link href="./assets/css/custom.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="./assets/css/datatable.css" />
+  <style>
+    .logo {
+      border-radius: 2px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .logo:hover {
+      opacity: 0.7;
+    }
+
+    .system-icon {
+      float: right;
+      padding-right: 15%;
+      opacity: 0.7;
+    }
+
+    .card-body:hover .system-icon {
+      opacity: 1;
+      transform: scale(1.5);
+    }
+
+    .client-title-grey {
+      padding-top: 1%;
+      background-image: radial-gradient(
+        white,
+        rgb(214, 214, 210),
+        rgb(226, 226, 226)
+      );
+      margin: 0%;
+    }
+  </style>
+  <style>
+    .no-padding {
+      padding: 0px !important;
+    }
+
+    .top-margin30 {
+      margin-top: -30px !important;
+    }
+
+    .tile-icon {
+      font-size: 28px;
+      margin-right: 10px;
+    }
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: bold;
+      font-family: monospace;
+    }
+
+    .card.mb-3 {
+      margin-bottom: 10px !important;
+    }
+
+    .card-disabled {
+      background-color: #e9ecef;
+      border-color: #bdbdbd;
+    }
+
+    .card-title-disabled {
+      text-transform: uppercase;
+      color: #bdbdbd;
+      font-weight: bold;
+      font-size: 0.88rem;
+    }
+  </style>
+
+  <script src="./assets/js/apexcharts.js"></script>
+  <script src="./assets/js/jquery.js"></script>
+  <script src="./assets/js/underscore.js"></script>
+  <script type="text/javascript" src="./assets/js/datatable.min.js"></script>
+
+  <script>
+    // Replace Math.random() with a pseudo-random number generator to get reproducible results in e2e tests
+    // Based on https://gist.github.com/blixt/f17b47c62508be59987b
+    var _seed = 42;
+    Math.random = function () {
+      _seed = (_seed * 16807) % 2147483647;
+      return (_seed - 1) / 2147483646;
+    };
+  </script>
+
+  <body>
+    <!-- Templates -->
+
+    <div
+      class="app-container app-theme-white body-tabs-shadow fixed-header closed-sidebar-mobile"
+    >
+      <div id="top-bar"></div>
+
+      <div class="app-main">
+        <div class="app-main__outer">
+          <div class="app-main__inner">
+            <div class="app-page-title no-bottom-margin">
+              <div class="page-title-wrapper">
+                <div class="page-title-heading">
+                  <div class="page-title-icon">
+                    <i class="fa fa-map icon-gradient bg-mean-fruit"> </i>
+                  </div>
+                  <div>
+                    Global view of your SAP Landscape
+                    <div class="page-title-subheading">
+                      Choose your SAP instance to start Profiling
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-content">
+              <div
+                class="tab-pane tabs-animation fade active show"
+                id=""
+                role="tabpanel"
+              >
+                <div class="main-card mb-3 card" style="padding: 1%">
+                  <div
+                    class="card-header-title"
+                    id="pageTilte"
+                    style="
+                      font-size: 120%;
+                      font-weight: bold;
+                      color: #565656;
+                      text-transform: none !important;
+                    "
+                  ></div>
+                  <div class="card-body" style="padding: 2%">
+                    <div class="row">
+                      <div
+                        class="col-lg-9 col-sm-12 col-md-8"
+                        id="map"
+                        style="max-height: 420px; min-height: 420px"
+                      ></div>
+                      <div
+                        class="col-lg-3 col-sm-12 col-md-4"
+                        id="SystemData"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- property file -->
+    <script
+      type="text/javascript"
+      src="./assets/resources/property.property"
+    ></script>
+    <script type="text/javascript" src="./assets/scripts/setup.js"></script>
+    <script type="text/javascript" src="./assets/scripts/custom.js"></script>
+    <script type="text/javascript" src="./assets/js/color.js"></script>
+  </body>
+  <script>
+    $("#top-bar").load("username_header.html");
+  </script>
+  <script type="text/javascript" src="./assets/scripts/main.js"></script>
+
+  <script
+    async
+    defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJa4zMM9j675fz2D218xv_mP-rbLA_6H0&region=IN&callback=initMap"
+  ></script>
+</html>

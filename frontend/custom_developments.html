@@ -1,0 +1,3539 @@
+<!DOCTYPE html>
+<html lang="en" style="background-color: rgb(243, 243, 243)">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Language" content="en" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Profiler 2.0</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Wide selection of cards with multiple styles, borders, actions and hover effects."
+    />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <link href="./main.css" rel="stylesheet" />
+    <link href="./assets/css/custom.css" rel="stylesheet" />
+    <script src="./assets/js/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="./assets/css/datatable.css" />
+  </head>
+  <style>
+    .Blink {
+      animation: blinker 1s cubic-bezier(0.5, 0, 1, 1) infinite alternate;
+    }
+    @keyframes blinker {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+
+    .node {
+      cursor: pointer;
+    }
+
+    .node circle {
+      fill: #fff;
+    }
+
+    .node text {
+      font: 16px sans-serif;
+    }
+
+    .link {
+      fill: none;
+      stroke: #ccc;
+      stroke-width: 1.5px;
+    }
+
+    .no-padding {
+      padding: 0px !important;
+    }
+
+    .top-margin30 {
+      margin-top: -20px !important;
+    }
+
+    .tile-icon {
+      font-size: 28px;
+      margin-right: 10px;
+    }
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: bold;
+      font-family: monospace;
+    }
+
+    .card.mb-3 {
+      margin-bottom: 10px !important;
+    }
+
+    .card-disabled {
+      background-color: #e9ecef;
+      border-color: #bdbdbd;
+    }
+
+    .card-title-disabled {
+      text-transform: uppercase;
+      color: #bdbdbd;
+      font-weight: bold;
+      font-size: 0.88rem;
+    }
+  </style>
+
+  <style>
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+      margin-left: 10px;
+      margin-top: 8px;
+    }
+
+    /* .switch input { 
+	  opacity: 0;
+	  width: 0;
+	  height: 0;
+	} */
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #2196f3;
+      -webkit-transition: 0.4s;
+      transition: 0.4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: 0.4s;
+      transition: 0.4s;
+    }
+
+    input:checked + .slider {
+      background-color: #2196f3;
+    }
+
+    input:focus + .slider {
+      box-shadow: 0 0 1px #2196f3;
+    }
+
+    input:checked + .slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+      border-radius: 34px;
+    }
+
+    .slider.round:before {
+      border-radius: 50%;
+    }
+  </style>
+  <style>
+    .fixTableHead {
+      overflow-y: auto;
+      max-height: 400px;
+      min-height: 400px;
+    }
+
+    .fixTableHead thead th {
+      position: sticky;
+      top: 0;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th,
+    td {
+      padding: 8px 15px;
+    }
+
+    th {
+      background: #f5f6f8;
+      padding: 0%;
+    }
+  </style>
+  <!-- Apexchart -->
+  <script type="text/javascript" src="./assets/js/apexcharts.js"></script>
+
+  <script src="./assets/js/highcharts.js"></script>
+  <script src="./assets/js/series-label.js"></script>
+  <script src="./assets/js/accessibility.js"></script>
+  <script src="./assets/js/jquery.js"></script>
+
+  <script type="text/javascript" src="./assets/js/datatable.min.js"></script>
+
+  <script>
+    var _seed = 42;
+    Math.random = function () {
+      _seed = (_seed * 16807) % 2147483647;
+      return (_seed - 1) / 2147483646;
+    };
+  </script>
+
+  <body>
+    <!-- Templates -->
+
+    <div
+      class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header"
+    >
+      <div id="top-bar"></div>
+
+      <div class="app-main">
+        <div id="side-bar"></div>
+
+        <div class="app-main__outer">
+          <div class="app-main__inner">
+            <div class="app-page-title no-bottom-margin">
+              <div class="page-title-wrapper">
+                <div class="page-title-heading">
+                  <div class="page-title-icon">
+                    <i class="pe-7s-way icon-gradient bg-mean-fruit"> </i>
+                  </div>
+                  <div>
+                    Technical
+                    <div class="page-title-subheading">Custom Objects</div>
+                  </div>
+                </div>
+                <div class="page-title-actions">
+                  <ul
+                    class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav no-padding"
+                  >
+                    <li class="nav-item">
+                      <a
+                        role="tab"
+                        class="nav-link active"
+                        id="tab_abap"
+                        data-toggle="tab"
+                        href="#abap"
+                        style="display: none"
+                      >
+                        <span>ABAP</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-content">
+              <div
+                class="tab-pane tabs-animation fade active show"
+                id="abap"
+                role="tabpanel"
+              >
+                <div>
+                  <ul
+                    class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav top-margin30"
+                  >
+                    <li class="nav-item">
+                      <a
+                        role="tab"
+                        class="nav-link active"
+                        id="tab-custom-system-details"
+                        data-toggle="tab"
+                        href="#tab-content-custom-system"
+                        style="display: none"
+                      >
+                        <span>System Details</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        role="tab"
+                        class="nav-link"
+                        id="tab-custom-volumetric-analysis"
+                        data-toggle="tab"
+                        href="#tab-content-custom-volumetric"
+                        style="display: none"
+                      >
+                        <span>Volumetric Analysis </span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        role="tab"
+                        class="nav-link"
+                        id="tab-custom-interface-insights"
+                        data-toggle="tab"
+                        href="#tab-content-interface-insights"
+                        style="display: none"
+                      >
+                        <span>Interface Insights</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        role="tab"
+                        class="nav-link"
+                        id="tab-custom-usage"
+                        data-toggle="tab"
+                        href="#tab-content-usage"
+                        style="display: none"
+                      >
+                        <span>Usage Analysis</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        role="tab"
+                        class="nav-link"
+                        id="tab-custom-transport"
+                        data-toggle="tab"
+                        href="#tab-content-transport"
+                        style="display: none"
+                      >
+                        <span>Transport Req. Analysis </span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        role="tab"
+                        class="nav-link"
+                        id="tab-custom-code-quality"
+                        data-toggle="tab"
+                        href="#tab-content-code-quality"
+                        style="display: none"
+                      >
+                        <span>Custom Code Quality</span>
+                      </a>
+                    </li>
+                  </ul>
+
+                  <div
+                    class="kpi-slider ui-theme-settings1 bg-primary"
+                    id="scen-kpi-slider"
+                  >
+                    <div class="slider parameter">
+                      <i class="fa fa-star fa-w-16"></i>
+                    </div>
+
+                    <div class="theme-settings__inner1">
+                      <div class="scrollbar-container ps bg-primary">
+                        <div class="kpi-heading">
+                          <div class="badge badge-pill badge-light">
+                            Process Efficiency
+                          </div>
+                        </div>
+                        <div class="kpi-list bg-primary">
+                          <div class="mb-3 card text-white card-body bg-info">
+                            <h5 class="text-white card-title text-center">
+                              Manual Intervention
+                            </h5>
+                            <ul id="ptp_overview_manual_intervention_id"></ul>
+                          </div>
+                          <div class="mb-3 card text-white card-body bg-info">
+                            <h5 class="text-white card-title text-center">
+                              Lead Time
+                            </h5>
+                            <ul id="ptp_overview_lead_time_id"></ul>
+                          </div>
+                          <div class="mb-3 card text-white card-body bg-info">
+                            <h5 class="text-white card-title text-center">
+                              Business KPIs / Process Deviations
+                            </h5>
+                            <ul id="ptp_overview_business_kpi_id"></ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tab-content">
+                    <div
+                      class="tab-pane tabs-animation active show"
+                      id="tab-content-custom-system"
+                      role="tabpanel"
+                    >
+                      <div class="main-card mb-3 card">
+                        <div
+                          class="card-header-tab card-header"
+                          style="height: 2.5rem"
+                        >
+                          <div class="card-header-title">System Details</div>
+                        </div>
+                        <div class="no-gutters row">
+                          <div class="col-md-6">
+                            <div class="pt-0 pb-0 card-body">
+                              <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                  <div class="widget-content p-0">
+                                    <div class="widget-content-outer">
+                                      <div class="widget-content-wrapper">
+                                        <div class="widget-content-left">
+                                          <div
+                                            class="widget-heading"
+                                            id="kpi_abap_label_1"
+                                          ></div>
+                                          <div class="widget-subheading"></div>
+                                        </div>
+                                        <div class="widget-content-right">
+                                          <div
+                                            class="widget-numbers text-warning"
+                                            id="kpi_abap_value_1"
+                                          ></div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </li>
+                                <li class="list-group-item">
+                                  <div class="widget-content p-0">
+                                    <div class="widget-content-outer">
+                                      <div class="widget-content-wrapper">
+                                        <div class="widget-content-left">
+                                          <div
+                                            class="widget-heading"
+                                            id="kpi_abap_label_2"
+                                          ></div>
+                                          <div class="widget-subheading"></div>
+                                        </div>
+                                        <div class="widget-content-right">
+                                          <div
+                                            class="widget-numbers text-success"
+                                            id="kpi_abap_value_2"
+                                          ></div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </li>
+                                <li class="list-group-item">
+                                  <div class="widget-content p-0">
+                                    <div class="widget-content-outer">
+                                      <div class="widget-content-wrapper">
+                                        <div class="widget-content-left">
+                                          <div
+                                            class="widget-heading"
+                                            id="kpi_abap_label_3"
+                                          ></div>
+                                          <div class="widget-subheading"></div>
+                                        </div>
+                                        <div class="widget-content-right">
+                                          <div
+                                            class="widget-numbers text-primary"
+                                            id="kpi_abap_value_3"
+                                          ></div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </li>
+
+                                <li class="list-group-item">
+                                  <div class="widget-content p-0">
+                                    <div class="widget-content-outer">
+                                      <div class="widget-content-wrapper">
+                                        <div class="widget-content-left">
+                                          <div
+                                            class="widget-heading"
+                                            id="kpi_abap_label_4"
+                                          ></div>
+                                          <div class="widget-subheading"></div>
+                                        </div>
+                                        <div class="widget-content-right">
+                                          <div
+                                            class="widget-numbers text-primary"
+                                            style="font-size: 1.2rem"
+                                            id="kpi_abap_value_4"
+                                          ></div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="pt-0 pb-0 card-body">
+                              <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                  <div class="widget-content p-0">
+                                    <div class="widget-content-outer">
+                                      <div class="widget-content-wrapper">
+                                        <div class="widget-content-left">
+                                          <div
+                                            class="widget-heading"
+                                            id="kpi_abap_label_5"
+                                          ></div>
+                                          <div class="widget-subheading"></div>
+                                        </div>
+                                        <div class="widget-content-right">
+                                          <div
+                                            class="widget-numbers text-danger"
+                                            id="kpi_abap_value_5"
+                                          ></div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </li>
+                                <li class="list-group-item">
+                                  <div class="widget-content p-0">
+                                    <div class="widget-content-outer">
+                                      <div class="widget-content-wrapper">
+                                        <div class="widget-content-left">
+                                          <div
+                                            class="widget-heading"
+                                            id="kpi_abap_label_6"
+                                          ></div>
+                                          <div class="widget-subheading"></div>
+                                        </div>
+                                        <div class="widget-content-right">
+                                          <div
+                                            class="widget-numbers text-warning"
+                                            id="kpi_abap_value_6"
+                                          ></div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </li>
+                                <li class="list-group-item">
+                                  <div class="widget-content p-0">
+                                    <div class="widget-content-outer">
+                                      <div class="widget-content-wrapper">
+                                        <div class="widget-content-left">
+                                          <div
+                                            class="widget-heading"
+                                            id="kpi_abap_label_7"
+                                          ></div>
+                                          <div class="widget-subheading"></div>
+                                        </div>
+                                        <div class="widget-content-right">
+                                          <div
+                                            class="widget-numbers text-danger"
+                                            id="kpi_abap_value_7"
+                                          ></div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </li>
+                                <li class="list-group-item">
+                                  <div class="widget-content p-0">
+                                    <div class="widget-content-outer">
+                                      <div class="widget-content-wrapper">
+                                        <div class="widget-content-left">
+                                          <div
+                                            class="widget-heading"
+                                            id="kpi_abap_label_8"
+                                          ></div>
+                                          <div class="widget-subheading"></div>
+                                        </div>
+                                        <div class="widget-content-right">
+                                          <div
+                                            class="widget-numbers text-primary"
+                                            id="kpi_abap_value_8"
+                                          ></div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="divider"></div>
+                      <div class="row">
+                        <div class="col-md-6 col-xl-6">
+                          <div class="main-card mb-3 card">
+                            <div class="card-body" style="width: 100%">
+                              <h5 class="card-title">Add Ons</h5>
+                              <div class="fixTableHead">
+                                <table
+                                  id="add_ons_table"
+                                  class="table table-striped table-bordered"
+                                  style="text-align: center; width: 100%"
+                                >
+                                  <thead>
+                                    <tr>
+                                      <th>AddOn Product</th>
+                                      <th>Version</th>
+                                      <th>Addon Description</th>
+                                    </tr>
+                                  </thead>
+
+                                  <tbody></tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-xl-6">
+                          <div class="main-card mb-3 card">
+                            <div class="card-body" style="width: 100%">
+                              <h5 class="card-title">Business Functions</h5>
+                              <div class="fixTableHead">
+                                <table
+                                  id="business_functions_table"
+                                  class="table table-striped table-bordered"
+                                  style="text-align: center; width: 100%"
+                                >
+                                  <thead>
+                                    <tr>
+                                      <th>Business Function</th>
+                                      <th>Business Function Description</th>
+                                    </tr>
+                                  </thead>
+
+                                  <tbody
+                                    id="business_functions_table_tbody"
+                                  ></tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      class="tab-pane tabs-animation"
+                      id="tab-content-custom-volumetric"
+                      role="tabpanel"
+                    >
+                      <div class="main-card mb-3 card">
+                        <div
+                          class="card-header-tab card-header"
+                          style="height: 3.5rem"
+                        >
+                          <div class="card-header-title">
+                            Custom Object Inventory
+                          </div>
+                        </div>
+
+                        <div class="no-gutters row">
+                          <div class="col-md-4">
+                            <div class="pt-0 pb-0 card-body">
+                              <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                  <div class="widget-content p-0">
+                                    <div class="widget-content-outer">
+                                      <div class="widget-content-wrapper">
+                                        <div class="widget-content-left">
+                                          <div
+                                            class="widget-heading"
+                                            id="kpi_custom_object_label_1"
+                                          ></div>
+                                          <div
+                                            class="widget-subheading"
+                                            id="kpi_custom_object_info_1"
+                                          ></div>
+                                        </div>
+                                        <div class="widget-content-right">
+                                          <div
+                                            class="widget-numbers"
+                                            id="kpi_custom_object_value_1"
+                                          ></div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="pt-0 pb-0 card-body">
+                              <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                  <div class="widget-content p-0">
+                                    <div class="widget-content-outer">
+                                      <div class="widget-content-wrapper">
+                                        <div class="widget-content-left">
+                                          <div
+                                            class="widget-heading"
+                                            id="kpi_custom_object_label_2"
+                                          ></div>
+                                          <div
+                                            class="widget-subheading"
+                                            id="kpi_custom_object_info_2"
+                                          ></div>
+                                        </div>
+                                        <div class="widget-content-right">
+                                          <div
+                                            class="widget-numbers"
+                                            id="kpi_custom_object_value_2"
+                                          ></div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="pt-0 pb-0 card-body">
+                              <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                  <div class="widget-content p-0">
+                                    <div class="widget-content-outer">
+                                      <div class="widget-content-wrapper">
+                                        <div class="widget-content-left">
+                                          <div
+                                            class="widget-heading"
+                                            id="kpi_custom_object_label_3"
+                                          ></div>
+                                          <div
+                                            class="widget-subheading"
+                                            id="kpi_custom_object_info_3"
+                                          ></div>
+                                        </div>
+                                        <div class="widget-content-right">
+                                          <div
+                                            class="widget-numbers"
+                                            id="kpi_custom_object_value_3"
+                                          ></div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="no-gutters row">
+                          <div class="col-md-6 col-xl-6">
+                            <div class="widget-chart p-3">
+                              <h5 class="card-title">Primary Objects</h5>
+                              <div id="custom_primary"></div>
+                            </div>
+                          </div>
+                          <div class="col-md-6 col-xl-6">
+                            <div
+                              class="pt-0 pb-0 card-body"
+                              style="
+                                overflow-y: scroll;
+                                height: 400px;
+                                width: 99%;
+                              "
+                            >
+                              <table class="table table-sm">
+                                <thead>
+                                  <tr>
+                                    <th style="width: 85%">Primary Objects</th>
+                                    <th style="width: 10%">Count</th>
+                                  </tr>
+                                </thead>
+                                <tbody id="primary_object_table_tbody"></tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="divider"></div>
+                      <div
+                        class="card-header-tab card-header"
+                        style="height: 3.5rem"
+                      >
+                        <div
+                          class="card-header-title"
+                          style="font-size: 0.99rem"
+                        >
+                          Process-Wise Distribution
+                        </div>
+                      </div>
+                      <div class="main-card mb-3 card">
+                        <div class="row">
+                          <div class="col-md-12 col-xl-12">
+                            <div class="widget-chart p-3">
+                              <h5 class="card-title">
+                                Process-wise Distribution of Primary Custom
+                                Objects
+                              </h5>
+                              <div id="custom_process_wise_dist"></div>
+                            </div>
+                          </div>
+                          <div class="col-md-6 col-xl-6">
+                            <div class="widget-chart p-3">
+                              <h5 class="card-title">
+                                Object Distribution for OTC
+                              </h5>
+                              <div id="custom_object_dist_otc"></div>
+                            </div>
+                          </div>
+                          <div class="col-md-6 col-xl-6">
+                            <div class="widget-chart p-3">
+                              <h5 class="card-title">
+                                Object Distribution for PTP
+                              </h5>
+                              <div id="custom_object_dist_ptp"></div>
+                            </div>
+                          </div>
+                          <div class="col-md-6 col-xl-6">
+                            <div class="widget-chart p-3">
+                              <h5 class="card-title">
+                                Object Distribution for RTR
+                              </h5>
+                              <div id="custom_object_dist_rtr"></div>
+                            </div>
+                          </div>
+                          <div class="col-md-6 col-xl-6">
+                            <div class="widget-chart p-3">
+                              <h5 class="card-title">
+                                Object Distribution for EAM
+                              </h5>
+                              <div id="custom_object_dist_eam"></div>
+                            </div>
+                          </div>
+                          <div class="col-md-6 col-xl-6">
+                            <div class="widget-chart p-3">
+                              <h5 class="card-title">
+                                Object Distribution for PS
+                              </h5>
+                              <div id="custom_object_dist_ps"></div>
+                            </div>
+                          </div>
+                          <div class="col-md-6 col-xl-6">
+                            <div class="widget-chart p-3">
+                              <h5 class="card-title">
+                                Object Distribution for PTD
+                              </h5>
+                              <div id="custom_object_dist_ptd"></div>
+                            </div>
+                          </div>
+                          <div class="col-md-6 col-xl-6">
+                            <div class="widget-chart p-3">
+                              <h5 class="card-title">
+                                Object Distribution for HCM
+                              </h5>
+                              <div id="custom_object_dist_hcm"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="divider"></div>
+                      <div class="main-card mb-3 card">
+                        <div
+                          class="card-header-tab card-header"
+                          style="height: 2.5rem"
+                        >
+                          <div class="card-header-title">
+                            Enhancement Insights
+                          </div>
+                        </div>
+                        <div class="no-gutters row">
+                          <div class="col-md-6 col-xl-6">
+                            <div class="widget-chart p-3">
+                              <h5 class="card-title">
+                                Function Exits by Module
+                              </h5>
+                              <div id="custom_ei_func_exits"></div>
+                            </div>
+                          </div>
+                          <div class="col-md-6 col-xl-6">
+                            <div class="widget-chart p-3">
+                              <h5 class="card-title">BADI by Module</h5>
+                              <div id="custom_ei_badi"></div>
+                            </div>
+                          </div>
+                          <div class="col-md-6 col-xl-6">
+                            <div class="widget-chart p-3">
+                              <h5 class="card-title">Screen Exits by Module</h5>
+                              <div id="custom_ei_screen_exits"></div>
+                            </div>
+                          </div>
+                          <div class="col-md-6 col-xl-6">
+                            <div class="widget-chart p-3">
+                              <h5 class="card-title">Routines by Module</h5>
+                              <div id="custom_ei_routines"></div>
+                            </div>
+                          </div>
+                          <div class="col-md-6 col-xl-6">
+                            <div class="widget-chart p-3">
+                              <h5 class="card-title">Table Exits by Module</h5>
+                              <div id="custom_ei_table_exits"></div>
+                            </div>
+                          </div>
+                          <div class="col-md-6 col-xl-6">
+                            <div class="widget-chart p-3">
+                              <h5 class="card-title">
+                                Implicit/Explicit by Module
+                              </h5>
+                              <div id="custom_ei_implicit"></div>
+                            </div>
+                          </div>
+                          <div class="col-md-6 col-xl-6">
+                            <div class="widget-chart p-3">
+                              <h5 class="card-title">Menu Exits by Module</h5>
+                              <div id="custom_ei_menu_exits"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="divider"></div>
+
+                      <div class="row">
+                        <div class="col-md-12 col-xl-12">
+                          <div class="mb-3 card">
+                            <div class="widget-chart p-3">
+                              <h5 class="card-title">
+                                Modified Object - Distribution by Object Type
+                              </h5>
+                              <div id="custom_ei_repaired"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="divider"></div>
+
+                      <div class="row">
+                        <div class="col-md-6 col-xl-6">
+                          <div class="mb-3 card">
+                            <div class="widget-chart p-3">
+                              <h5 class="card-title">
+                                Repaired Objects by Module
+                              </h5>
+                              <div id="custom_ei_modified"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-xl-6">
+                          <div class="mb-3 card">
+                            <div class="widget-chart p-3">
+                              <h5 class="card-title">
+                                Artifact wise Process wise Cloned Objects
+                              </h5>
+                              <div id="custom_ei_artifact"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      class="tab-pane tabs-animation"
+                      id="tab-content-interface-insights"
+                      role="tabpanel"
+                    >
+                      <div class="row">
+                        <div class="col-md-12 col-xl-12">
+                          <div class="main-card mb-3 card">
+                            <div class="card-header-tab card-header">
+                              <div class="card-header-title">
+                                Interface Insights
+                              </div>
+                            </div>
+                            <div class="no-gutters row">
+                              <div class="col-md-4">
+                                <div class="pt-0 pb-0 card-body">
+                                  <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                      <div class="widget-content p-0">
+                                        <div class="widget-content-outer">
+                                          <div class="widget-content-wrapper">
+                                            <div class="widget-content-left">
+                                              <div
+                                                class="widget-heading"
+                                                id="kpi_interface_insight_label_1"
+                                              ></div>
+                                              <div
+                                                class="widget-subheading"
+                                              ></div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                              <div
+                                                class="widget-numbers"
+                                                style="font-size: 1.6rem"
+                                                id="kpi_interface_insight_value_1"
+                                              ></div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                      <div class="widget-content p-0">
+                                        <div class="widget-content-outer">
+                                          <div class="widget-content-wrapper">
+                                            <div class="widget-content-left">
+                                              <div
+                                                class="widget-heading"
+                                                id="kpi_interface_insight_label_2"
+                                              ></div>
+                                              <div
+                                                class="widget-subheading"
+                                              ></div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                              <div
+                                                class="widget-numbers"
+                                                style="font-size: 1.6rem"
+                                                id="kpi_interface_insight_value_2"
+                                              ></div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="pt-0 pb-0 card-body">
+                                  <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                      <div class="widget-content p-0">
+                                        <div class="widget-content-outer">
+                                          <div class="widget-content-wrapper">
+                                            <div class="widget-content-left">
+                                              <div
+                                                class="widget-heading"
+                                                id="kpi_interface_insight_label_3"
+                                              ></div>
+                                              <div
+                                                class="widget-subheading"
+                                              ></div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                              <div
+                                                class="widget-numbers"
+                                                style="font-size: 1.6rem"
+                                                id="kpi_interface_insight_value_3"
+                                              ></div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                      <div class="widget-content p-0">
+                                        <div class="widget-content-outer">
+                                          <div class="widget-content-wrapper">
+                                            <div class="widget-content-left">
+                                              <div
+                                                class="widget-heading"
+                                                id="kpi_interface_insight_label_4"
+                                              ></div>
+                                              <div
+                                                class="widget-subheading"
+                                              ></div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                              <div
+                                                class="widget-numbers text-warning"
+                                                style="font-size: 1.6rem"
+                                                id="kpi_interface_insight_value_4"
+                                              ></div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="pt-0 pb-0 card-body">
+                                  <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                      <div class="widget-content p-0">
+                                        <div class="widget-content-outer">
+                                          <div class="widget-content-wrapper">
+                                            <div class="widget-content-left">
+                                              <div
+                                                class="widget-heading"
+                                                id="kpi_interface_insight_label_5"
+                                              ></div>
+                                              <div
+                                                class="widget-subheading"
+                                              ></div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                              <div
+                                                class="widget-numbers"
+                                                style="font-size: 1.6rem"
+                                                id="kpi_interface_insight_value_5"
+                                              ></div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="divider"></div>
+                      <div class="main-card mb-3 card">
+                        <div
+                          class="card-header-tab card-header"
+                          style="height: 2.5rem"
+                        >
+                          <div class="card-header-title">Idoc Interfaces</div>
+                        </div>
+                        <div class="no-gutters row">
+                          <div class="col-md-12">
+                            <div class="card-body">
+                              <h5 class="card-title">
+                                Partner Type Analysis&nbsp;&nbsp;
+                                <div class="mb-2 mr-2 btn-group"></div>
+                              </h5>
+
+                              <div
+                                id="abap_idoc_interface_analysis"
+                                style="cursor: pointer"
+                              ></div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="no-gutters row">
+                          <div class="col-md-12">
+                            <div class="card-body">
+                              <h5 class="card-title">
+                                Custom IDOC Message Types&nbsp;&nbsp;
+                                <div class="mb-2 mr-2 btn-group"></div>
+                              </h5>
+
+                              <div id="custom_ii_idoc"></div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="no-gutters row">
+                          <div class="col-md-6">
+                            <div class="card-body">
+                              <h5 class="card-title">
+                                Inbound IDoc Traffic&nbsp;&nbsp;
+                                <div class="mb-2 mr-2 btn-group"></div>
+                              </h5>
+
+                              <div id="custom_ii_inbound"></div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="card-body">
+                              <h5 class="card-title">
+                                Outbound IDoc Traffic&nbsp;&nbsp;
+                                <div class="mb-2 mr-2 btn-group"></div>
+                              </h5>
+
+                              <div id="custom_ii_outbound"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="divider"></div>
+                      <div class="main-card mb-3 card">
+                        <div
+                          class="card-header-tab card-header"
+                          style="height: 2.5rem"
+                        >
+                          <div class="card-header-title">RFC Interfaces</div>
+                        </div>
+                        <div class="no-gutters row">
+                          <div class="col-md-12">
+                            <div class="card-body">
+                              <h5 class="card-title">
+                                RFC Function Modules&nbsp;&nbsp;
+                                <div class="mb-2 mr-2 btn-group"></div>
+                              </h5>
+
+                              <div
+                                id="abap_interface_inbound_outbound"
+                                style="cursor: pointer"
+                              ></div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="no-gutters row">
+                          <div class="col-md-12">
+                            <div class="card-body">
+                              <h5 class="card-title">
+                                RFC Connections&nbsp;&nbsp;
+                                <div class="mb-2 mr-2 btn-group"></div>
+                              </h5>
+
+                              <div
+                                id="abap_interface_rfc_function"
+                                style="cursor: pointer"
+                              ></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="divider"></div>
+                      <div class="row">
+                        <div class="col-md-12 col-xl-12">
+                          <div class="main-card mb-3 card">
+                            <div class="card-header-tab card-header">
+                              <div class="card-header-title">
+                                File Interfaces
+                              </div>
+                            </div>
+
+                            <div class="no-gutters row">
+                              <div class="col-md-12 col-xl-12">
+                                <div class="widget-chart p-3">
+                                  <div id="custom_ii_total"></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="divider"></div>
+                      <div class="row">
+                        <div class="col-md-6 col-xl-6">
+                          <div class="main-card mb-3 card">
+                            <div class="card-header-tab card-header">
+                              <div class="card-header-title">
+                                Odata Services
+                              </div>
+                            </div>
+
+                            <div class="no-gutters row">
+                              <div class="col-md-12 col-xl-12">
+                                <div
+                                  class="widget-chart p-3"
+                                  style="cursor: pointer"
+                                >
+                                  <div id="abap_interface_odata"></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-xl-6">
+                          <div class="mb-3 card">
+                            <div class="card-header-tab card-header">
+                              <div class="card-header-title">
+                                System Integration
+                              </div>
+                            </div>
+                            <div class="widget-chart p-3">
+                              <div id="sys_int_barchart"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      class="tab-pane tabs-animation fade"
+                      id="tab-content-usage"
+                      role="tabpanel"
+                    >
+                      <div class="row">
+                        <div class="col-md-6 col-xl-6">
+                          <div class="mb-6 card">
+                            <div class="card-header-tab card-header">
+                              <div class="card-header-title">
+                                <i
+                                  class="header-icon lnr-rocket icon-gradient bg-tempting-azure"
+                                >
+                                </i>
+                                Artifact wise custom object usage
+                              </div>
+                              <div
+                                class="card-more"
+                                data-toggle="modal"
+                                data-target="#modal_artifacts"
+                              >
+                                <i class="fa fa-info-circle"></i>
+                              </div>
+                            </div>
+                            <div class="widget-chart p-3">
+                              <div id="custom_artifacts"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-xl-6">
+                          <div class="mb-6 card">
+                            <div class="card-header-tab card-header">
+                              <div class="card-header-title">
+                                <i
+                                  class="header-icon lnr-rocket icon-gradient bg-tempting-azure"
+                                >
+                                </i>
+                                Top 20 Frequently Used Custom Transactions
+                              </div>
+                            </div>
+                            <div style="height: 395px; overflow-y: scroll">
+                              <table
+                                class="table table-sm"
+                                style="height: 380px; overflow-y: scroll"
+                                id="usage_analysis_top_custom_transactions_table"
+                              >
+                                <thead>
+                                  <tr>
+                                    <th style="padding-left: 20px">
+                                      Custom Transactions
+                                    </th>
+                                    <th style="padding-right: 20px">Count</th>
+                                  </tr>
+                                </thead>
+                                <tbody
+                                  id="usage_analysis_top_custom_transactions_tbody"
+                                ></tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="divider"></div>
+
+                      <div class="row">
+                        <div class="col-md-6 col-xl-6">
+                          <div class="mb-3 card">
+                            <div class="card-header-tab card-header">
+                              <div class="card-header-title">
+                                <i
+                                  class="header-icon lnr-rocket icon-gradient bg-tempting-azure"
+                                >
+                                </i>
+                                Standard Objects Vs Custom Objects
+                              </div>
+                            </div>
+
+                            <div class="widget-chart p-3">
+                              <div id="custom_standard_vs_custom"></div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6 col-xl-6">
+                          <div class="mb-3 card">
+                            <div class="card-header-tab card-header">
+                              <div class="card-header-title">
+                                <i
+                                  class="header-icon lnr-rocket icon-gradient bg-tempting-azure"
+                                >
+                                </i>
+                                Top 20 Frequently Used Custom Programs
+                              </div>
+                            </div>
+
+                            <div style="height: 395px; overflow-y: scroll">
+                              <table
+                                class="table table-sm"
+                                style="height: 380px"
+                                id="usage_analysis_top_custom_programs_table"
+                              >
+                                <thead>
+                                  <tr>
+                                    <th style="padding-left: 20px">
+                                      Custom Programs
+                                    </th>
+                                    <th style="padding-right: 20px">Count</th>
+                                  </tr>
+                                </thead>
+                                <tbody
+                                  id="usage_analysis_top_custom_programs_tbody"
+                                ></tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      class="tab-pane tabs-animation fade"
+                      id="tab-content-transport"
+                      role="tabpanel"
+                    >
+                      <div class="row">
+                        <div class="col-md-6 col-xl-6">
+                          <div class="mb-3 card">
+                            <div class="card-header-tab card-header">
+                              <div class="card-header-title">
+                                <i
+                                  class="header-icon lnr-rocket icon-gradient bg-tempting-azure"
+                                >
+                                </i>
+                                Workbench Vs Repair Vs Customizing Transports
+                              </div>
+                            </div>
+
+                            <div class="widget-chart p-3">
+                              <div
+                                id="custom_workbench_vs_repair_vs_customizing"
+                              ></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-xl-6">
+                          <div class="mb-6 card">
+                            <div class="card-header-tab card-header">
+                              <div class="card-header-title">
+                                <i
+                                  class="header-icon lnr-rocket icon-gradient bg-tempting-azure"
+                                >
+                                </i>
+                                Top 10 Frequently Transported Objects
+                              </div>
+                            </div>
+                            <table
+                              class="table table-sm"
+                              style="height: 380px"
+                              id="custom_transport_req_table"
+                            >
+                              <thead>
+                                <tr>
+                                  <th style="padding-left: 20px">Object</th>
+                                  <th style="padding-left: 20px">
+                                    Object Name
+                                  </th>
+                                  <th class="" style="padding-right: 20px">
+                                    Count
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody
+                                id="custom_transport_req_table_tbody"
+                              ></tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      class="tab-pane tabs-animation fade"
+                      id="tab-content-code-quality"
+                      role="tabpanel"
+                    >
+                      <div class="row">
+                        <div class="col-md-6 col-xl-6">
+                          <div class="mb-3 card">
+                            <div class="card-header-tab card-header">
+                              <div class="card-header-title">
+                                HANA OPTIMIZATION Violation - Objects
+                              </div>
+                              <div
+                                class="card-more"
+                                data-toggle="modal"
+                                data-target="#modal_hana_optimization"
+                              >
+                                <i class="fa fa-info-circle"></i>
+                              </div>
+                            </div>
+
+                            <div class="widget-chart p-3">
+                              <div id="custom_hana_optimization"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-xl-6">
+                          <div class="mb-3 card">
+                            <div class="card-header-tab card-header">
+                              <div class="card-header-title">
+                                HANA MIGRATION Violation - Objects
+                              </div>
+                              <div
+                                class="card-more"
+                                data-toggle="modal"
+                                data-target="#modal_hana_migration"
+                              >
+                                <i class="fa fa-info-circle"></i>
+                              </div>
+                            </div>
+
+                            <div class="widget-chart p-3">
+                              <div id="custom_hana_migration"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="divider"></div>
+                      <div class="row">
+                        <div class="col-md-6 col-xl-6">
+                          <div class="mb-3 card">
+                            <div class="card-header-tab card-header">
+                              <div class="card-header-title">
+                                BEST PRACTICE Violation - Objects
+                              </div>
+                              <div
+                                class="card-more"
+                                data-toggle="modal"
+                                data-target="#modal_best_practice"
+                              >
+                                <i class="fa fa-info-circle"></i>
+                              </div>
+                            </div>
+
+                            <div class="widget-chart p-3">
+                              <div id="custom_best_pratice"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-xl-6">
+                          <div class="mb-3 card">
+                            <div class="card-header-tab card-header">
+                              <div class="card-header-title">
+                                SECURITY Violation - Objects
+                              </div>
+                              <div
+                                class="card-more"
+                                data-toggle="modal"
+                                data-target="#modal_security"
+                              >
+                                <i class="fa fa-info-circle"></i>
+                              </div>
+                            </div>
+
+                            <div class="widget-chart p-3">
+                              <div id="custom_security"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="modal_enhancement_type"
+      class="modal fade bd-example-modal-lg"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="widget-subheading opacity-7">
+              <h5 class="modal-title" id="overall_modal_title_id"></h5>
+              Enhancement Types
+            </div>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="main-card mb-3 card">
+                  <div class="table-responsive">
+                    <table
+                      class="align-middle mb-0 table table-borderless table-striped table-hover"
+                      id="custom_ei_enhancement_types_chart"
+                    >
+                      <thead>
+                        <tr>
+                          <th>Enhancement Type</th>
+                          <th class="text-center">Count</th>
+                          <th class="text-center">Active</th>
+                          <th class="text-center">Inactive/Missing</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th>Implicit and Explicit Enhancement</th>
+                          <td class="text-center">259</td>
+                          <td class="text-center">251</td>
+                          <td class="text-center">8</td>
+                        </tr>
+                        <tr>
+                          <th>Routines</th>
+                          <td class="text-center">228</td>
+                          <td class="text-center">220</td>
+                          <td class="text-center">8</td>
+                        </tr>
+                        <tr>
+                          <th>Function Exit</th>
+                          <td class="text-center">207</td>
+                          <td class="text-center">104</td>
+                          <td class="text-center">103</td>
+                        </tr>
+                        <tr>
+                          <th>Business Add-In-Implementations</th>
+                          <td class="text-center">39</td>
+                          <td class="text-center">39</td>
+                          <td class="text-center">0</td>
+                        </tr>
+                        <tr>
+                          <th>Screen Exit</th>
+                          <td class="text-center">7</td>
+                          <td class="text-center">7</td>
+                          <td class="text-center">0</td>
+                        </tr>
+                        <tr>
+                          <th>SD User Exit</th>
+                          <td class="text-center">7</td>
+                          <td class="text-center">7</td>
+                          <td class="text-center">0</td>
+                        </tr>
+                        <tr>
+                          <th>Field Exit</th>
+                          <td class="text-center">5</td>
+                          <td class="text-center">5</td>
+                          <td class="text-center">0</td>
+                        </tr>
+                        <tr>
+                          <th>Table Exit</th>
+                          <td class="text-center">3</td>
+                          <td class="text-center">3</td>
+                          <td class="text-center">0</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="idoc_interface_analysis_modal"
+      class="modal fade bd-example-modal-lg show"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-modal="true"
+      style="display: none"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="widget-subheading opacity-7">
+              <h5 class="modal-title" id="interface_name"></h5>
+              <span id="sub_sender_name"></span>
+            </div>
+            <button
+              type="button"
+              class="close"
+              onclick="closeModal();"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="height: 390px">
+            <div class="row">
+              <div class="col-md-12">
+                <ul
+                  class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav top-margin30"
+                >
+                  <li class="nav-item">
+                    <a
+                      role="tab"
+                      class="nav-link active"
+                      id="tab_partnerwise_button"
+                      data-toggle="tab"
+                      href="#tab_partnerwise"
+                    >
+                      <span>Partner wise report </span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      role="tab"
+                      class="nav-link"
+                      id="tab_messagetype"
+                      data-toggle="tab"
+                      href="#tab_content_message_type"
+                    >
+                      <span>Message type wise report </span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      role="tab"
+                      class="nav-link"
+                      id="tab_alltransaction"
+                      data-toggle="tab"
+                      href="#tab_content_all_transaction"
+                    >
+                      <span>All Transactions</span>
+                    </a>
+                  </li>
+                </ul>
+
+                <div class="tab-content">
+                  <div
+                    class="tab-pane tabs-animation fade active show"
+                    id="tab_partnerwise"
+                    role="tabpanel"
+                  >
+                    <div class="row" style="margin-top: 2%">
+                      <div class="col-md-12">
+                        <div
+                          class="main-card mb-3 card"
+                          style="height: 325px; overflow-y: scroll"
+                        >
+                          <div class="">
+                            <table
+                              class="align-middle mb-0 table table-borderless table-striped table-hover"
+                              id="idoc_partnerwise_table"
+                            >
+                              <thead id="" style="white-space: nowrap">
+                                <th>Partner Number</th>
+                                <th>Partner Description</th>
+                              </thead>
+                              <tbody
+                                id="idoc_partnerwise_table_tbody"
+                                style="white-space: nowrap"
+                              ></tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="tab-pane tabs-animation fade"
+                    id="tab_content_message_type"
+                    role="tabpanel"
+                  >
+                    <div class="row" style="margin-top: 2%">
+                      <div class="col-md-12">
+                        <div
+                          class="main-card mb-3 card"
+                          style="height: 325px; overflow-y: scroll"
+                        >
+                          <div class="">
+                            <table
+                              class="align-middle mb-0 table table-borderless table-striped table-hover"
+                              id="idoc_message_type_table"
+                            >
+                              <thead id="">
+                                <th>Message Type</th>
+                                <th>Message Type Description</th>
+                                <th>Basic Type</th>
+                              </thead>
+                              <tbody id="idoc_message_type_table_tbody"></tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="tab-pane tabs-animation fade"
+                    id="tab_content_all_transaction"
+                    role="tabpanel"
+                  >
+                    <div class="row" style="margin-top: 2%">
+                      <div class="col-md-12">
+                        <div
+                          class="main-card mb-3 card"
+                          style="height: 325px; overflow-y: scroll"
+                        >
+                          <div class="">
+                            <table
+                              class="align-middle mb-0 table table-borderless table-striped table-hover"
+                              id="idoc_alltransactions_table"
+                            >
+                              <thead id="">
+                                <th>Partner Number</th>
+                                <th>Partner Description</th>
+                                <th>Message Type</th>
+                                <th>Port</th>
+                                <th>RFC</th>
+                              </thead>
+                              <tbody
+                                id="idoc_alltransactions_table_tbody"
+                              ></tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="closeModal();"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="transport_request_modal"
+      class="modal fade bd-example-modal-lg show"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-modal="true"
+      style="display: none"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="widget-subheading opacity-7">
+              <h5 class="modal-title" id="transport_name"></h5>
+              <span id="sub_transport_name"></span>
+            </div>
+            <button
+              type="button"
+              class="close"
+              onclick="closeModal();"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="height: 390px">
+            <div class="row">
+              <div class="col-md-12">
+                <ul
+                  class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav top-margin30"
+                >
+                  <li class="nav-item">
+                    <a
+                      role="tab"
+                      class="nav-link active"
+                      id="tab_cts_button"
+                      data-toggle="tab"
+                      href="#tab_cts"
+                    >
+                      <span>CTS </span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      role="tab"
+                      class="nav-link"
+                      id="tab_file_button"
+                      data-toggle="tab"
+                      href="#tab_file"
+                    >
+                      <span>File </span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      role="tab"
+                      class="nav-link"
+                      id="tab_object_type_button"
+                      data-toggle="tab"
+                      href="#tab_object_type_count"
+                    >
+                      <span>Object Type Count</span>
+                    </a>
+                  </li>
+                </ul>
+
+                <div class="tab-content">
+                  <div
+                    class="tab-pane tabs-animation fade active show"
+                    id="tab_cts"
+                    role="tabpanel"
+                  >
+                    <div class="row" style="margin-top: 2%">
+                      <div class="col-md-12">
+                        <div
+                          class="main-card mb-3 card"
+                          style="height: 325px; overflow-y: scroll"
+                        >
+                          <div class="">
+                            <table
+                              class="align-middle mb-0 table table-borderless table-striped table-hover"
+                              id="tr_cts_table"
+                            >
+                              <thead id="" style="white-space: nowrap">
+                                <th>Transport ID</th>
+                                <th>Description</th>
+                              </thead>
+                              <tbody
+                                id="tr_cts_table_tbody"
+                                style="white-space: nowrap"
+                              ></tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="tab-pane tabs-animation fade"
+                    id="tab_file"
+                    role="tabpanel"
+                  >
+                    <div class="row" style="margin-top: 2%">
+                      <div class="col-md-12">
+                        <div
+                          class="main-card mb-3 card"
+                          style="height: 325px; overflow-y: scroll"
+                        >
+                          <div class="">
+                            <table
+                              class="align-middle mb-0 table table-borderless table-striped table-hover"
+                              id="tr_file_table"
+                            >
+                              <thead id="">
+                                <th>Transport ID</th>
+                                <th>Description</th>
+                              </thead>
+                              <tbody id="tr_file_table_tbody"></tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="tab-pane tabs-animation fade"
+                    id="tab_object_type_count"
+                    role="tabpanel"
+                  >
+                    <div class="row" style="margin-top: 2%">
+                      <div class="col-md-12">
+                        <div
+                          class="main-card mb-3 card"
+                          style="height: 325px; overflow-y: scroll"
+                        >
+                          <div class="">
+                            <table
+                              class="align-middle mb-0 table table-borderless table-striped table-hover"
+                              id="tr_object_table"
+                            >
+                              <thead id="">
+                                <th>Object Type</th>
+                                <th>Count</th>
+                              </thead>
+                              <tbody id="tr_object_table_tbody"></tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="closeModal();"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="rfc_connection_modal"
+      class="modal fade bd-example-modal-lg show"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-modal="true"
+      style="display: none"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="widget-subheading opacity-7">
+              <h5 class="modal-title" id="rfc_connection_name"></h5>
+              <span id=""></span>
+            </div>
+            <button
+              type="button"
+              class="close"
+              onclick="closeModal();"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="height: 360px">
+            <div class="row">
+              <div class="col-md-12" style="height: 325px; overflow-y: scroll">
+                <div class="">
+                  <table
+                    class="align-middle mb-0 table table-borderless table-striped table-hover"
+                    id="table_rfc_module"
+                  >
+                    <thead id="" style="white-space: nowrap">
+                      <th>Module Name</th>
+                      <th>RFC FM Name</th>
+                      <th>Development Class or Package</th>
+                      <th>Development Class or Package Description</th>
+                      <th>RFC Description</th>
+                      <th>FM Include</th>
+                      <th>Function Group Name</th>
+                      <th>Application</th>
+                      <th>Used in object</th>
+                      <th>Object Type</th>
+                      <th>RFC Destination</th>
+                      <th>RFC Destination Description</th>
+                    </thead>
+                    <tbody
+                      id="table_rfc_module_tbody"
+                      style="white-space: nowrap"
+                    ></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="closeModal();"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="rfc_function_modal"
+      class="modal fade bd-example-modal-lg show"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-modal="true"
+      style="display: none"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="widget-subheading opacity-7">
+              <h5 class="modal-title" id="rfc_function_module_name"></h5>
+              <span id=""></span>
+            </div>
+            <button
+              type="button"
+              class="close"
+              onclick="closeModal();"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="height: 360px">
+            <div class="row">
+              <div class="col-md-12" style="height: 325px; overflow-y: scroll">
+                <div class="">
+                  <table
+                    class="align-middle mb-0 table table-borderless table-striped table-hover"
+                    id="rfc_function_table"
+                  >
+                    <thead id="" style="white-space: nowrap">
+                      <th>RFC Destination</th>
+                      <th>RFC Description</th>
+                      <th>RFC Type</th>
+                      <th>Host or IP Address</th>
+                      <th>Gateway Host</th>
+                      <th>Gateway Service</th>
+                      <th>System Number</th>
+                      <th>RFC Client</th>
+                      <th>RFC Username</th>
+                      <th>RFC Logon Language</th>
+                      <th>Trusted/Non-Trusted RFC</th>
+                      <th>Unicode/ Non-Unicode</th>
+                      <th>Load Balance</th>
+                    </thead>
+                    <tbody
+                      id="rfc_function_table_tbody"
+                      style="white-space: nowrap"
+                    ></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="closeModal();"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="rfc_custom_idoc_modal"
+      class="modal fade bd-example-modal-lg show"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-modal="true"
+      style="display: none"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="widget-subheading opacity-7">
+              <h5 class="modal-title" id="rfc_custom_idoc_module_name"></h5>
+              <span id=""></span>
+            </div>
+            <button
+              type="button"
+              class="close"
+              onclick="closeModal();"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="height: 360px">
+            <div class="row">
+              <div class="col-md-12" style="height: 325px; overflow-y: scroll">
+                <div class="">
+                  <table
+                    class="align-middle mb-0 table table-borderless table-striped table-hover"
+                    id="rfc_custom_idoc_table"
+                  >
+                    <thead id="" style="white-space: nowrap">
+                      <th>Object Name</th>
+                      <th>Development Class or Package</th>
+                      <th>Development Class or Package Description</th>
+                      <th>Author</th>
+                      <th>Description of The Object</th>
+                      <th>Message Type</th>
+                      <th>Short Description of Object</th>
+                    </thead>
+                    <tbody
+                      id="rfc_custom_idoc_table_tbody"
+                      style="white-space: nowrap"
+                    ></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="closeModal();"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="modal_idoc_interface"
+      class="modal fade bd-example-modal-lg show"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-modal="true"
+      style="display: none"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="widget-subheading opacity-7">
+              <h5 class="modal-title" id="">Idoc Interface</h5>
+              <span id="sub_sender_name"></span>
+            </div>
+            <button
+              type="button"
+              class="close"
+              onclick="closeModal();"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="height: 390px">
+            <div class="row">
+              <div class="col-md-12">
+                <ul
+                  class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav top-margin30"
+                >
+                  <li class="nav-item">
+                    <a
+                      role="tab"
+                      class="nav-link active"
+                      id="tab_inbound_button"
+                      data-toggle="tab"
+                      href="#tab_inbound"
+                    >
+                      <span>Inbound Message</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      role="tab"
+                      class="nav-link"
+                      id="tab_outbound_button"
+                      data-toggle="tab"
+                      href="#tab_outbound"
+                    >
+                      <span>Outbound Message </span>
+                    </a>
+                  </li>
+                </ul>
+
+                <div class="tab-content">
+                  <div
+                    class="tab-pane tabs-animation fade active show"
+                    id="tab_inbound"
+                    role="tabpanel"
+                  >
+                    <div class="row" style="margin-top: 2%">
+                      <div class="col-md-12">
+                        <div
+                          class="main-card mb-3 card"
+                          style="height: 325px; overflow-y: scroll"
+                        >
+                          <div class="">
+                            <table
+                              class="align-middle mb-0 table table-borderless table-striped table-hover"
+                              id="table_inbound_idoc"
+                            >
+                              <thead id="" style="white-space: nowrap">
+                                <th>Inbound Message Type and Description</th>
+                                <th>No of Inbound Partners</th>
+                              </thead>
+                              <tbody
+                                id="table_inbound_idoc_tbody"
+                                style="white-space: nowrap"
+                              ></tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="tab-pane tabs-animation fade"
+                    id="tab_outbound"
+                    role="tabpanel"
+                  >
+                    <div class="row" style="margin-top: 2%">
+                      <div class="col-md-12">
+                        <div
+                          class="main-card mb-3 card"
+                          style="height: 325px; overflow-y: scroll"
+                        >
+                          <div class="">
+                            <table
+                              class="align-middle mb-0 table table-borderless table-striped table-hover"
+                              id="table_outbound_idoc"
+                            >
+                              <thead id="">
+                                <th>Outbound Message Type and Description</th>
+                                <th>No of Outbound Partners</th>
+                              </thead>
+                              <tbody id="table_outbound_idoc_tbody"></tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="tab-pane tabs-animation fade"
+                    id="tab_content_all_transaction"
+                    role="tabpanel"
+                  >
+                    <div class="row" style="margin-top: 2%">
+                      <div class="col-md-12">
+                        <div
+                          class="main-card mb-3 card"
+                          style="height: 325px; overflow-y: scroll"
+                        >
+                          <div class="">
+                            <table
+                              class="align-middle mb-0 table table-borderless table-striped table-hover"
+                              id="idoc_alltransactions_table"
+                            >
+                              <thead id="">
+                                <th>Partner Number</th>
+                                <th>Partner Description</th>
+                                <th>Message Type</th>
+                                <th>Port</th>
+                                <th>RFC</th>
+                              </thead>
+                              <tbody
+                                id="idoc_alltransactions_table_tbody"
+                              ></tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="closeModal();"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="odata_service_modal"
+      class="modal fade bd-example-modal-lg show"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-modal="true"
+      style="display: none"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="widget-subheading opacity-7">
+              <h5 class="modal-title" id="odata_module_name"></h5>
+              <span id=""></span>
+            </div>
+            <button
+              type="button"
+              class="close"
+              onclick="closeModal();"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="height: 360px">
+            <div class="row">
+              <div class="col-md-12" style="height: 325px; overflow-y: scroll">
+                <div class="">
+                  <table
+                    class="align-middle mb-0 table table-borderless table-striped table-hover"
+                    id="odata_service_table"
+                  >
+                    <thead
+                      id=""
+                      style="white-space: nowrap; text-align: center"
+                    >
+                      <th>Project</th>
+                      <th>Description</th>
+                      <th>Entity Name</th>
+                      <th>Data Provider Class</th>
+                      <th>External Service Name</th>
+                      <th>Object Name</th>
+                      <th>Gen Art Type</th>
+                      <th>Package</th>
+                    </thead>
+                    <tbody
+                      id="odata_service_table_tbody"
+                      style="white-space: nowrap"
+                    ></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="closeModal();"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom Code Quality Modals Start -->
+
+    <div
+      id="modal_hana_optimization"
+      class="modal fade bd-example-modal-lg"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="widget-subheading opacity-7">
+              <h5 class="modal-title" id="overall_modal_title_id"></h5>
+              HANA Optimization
+            </div>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="height: 360px">
+            <div class="row">
+              <div class="col-md-12" style="height: 325px; overflow-y: scroll">
+                <div class="main-card mb-3 card">
+                  <div class="table-responsive">
+                    <table
+                      class="align-middle mb-0 table table-borderless table-striped table-hover"
+                      id="custom_hana_optimization_table"
+                    >
+                      <thead id="custom_hana_optimization_table_thead"></thead>
+                      <tbody id="custom_hana_optimization_table_tbody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="modal_hana_migration"
+      class="modal fade bd-example-modal-lg"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="widget-subheading opacity-7">
+              <h5 class="modal-title" id="overall_modal_title_id"></h5>
+              HANA Migration
+            </div>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="height: 360px">
+            <div class="row">
+              <div class="col-md-12" style="height: 325px; overflow-y: scroll">
+                <div class="main-card mb-3 card">
+                  <div class="table-responsive">
+                    <table
+                      class="align-middle mb-0 table table-borderless table-striped table-hover"
+                      id="custom_hana_migration_table"
+                    >
+                      <thead id="custom_hana_migration_table_thead"></thead>
+                      <tbody id="custom_hana_migration_table_tbody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="modal_best_practice"
+      class="modal fade bd-example-modal-lg"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="widget-subheading opacity-7">
+              <h5 class="modal-title" id="overall_modal_title_id"></h5>
+              Best Practices
+            </div>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="height: 360px">
+            <div class="row">
+              <div class="col-md-12" style="height: 325px; overflow-y: scroll">
+                <div class="main-card mb-3 card">
+                  <div class="table-responsive">
+                    <table
+                      class="align-middle mb-0 table table-borderless table-striped table-hover"
+                      id="custom_best_practice_table"
+                    >
+                      <thead id="custom_best_practice_table_thead"></thead>
+                      <tbody id="custom_best_practice_table_tbody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="modal_security"
+      class="modal fade bd-example-modal-lg"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="widget-subheading opacity-7">
+              <h5 class="modal-title" id="overall_modal_title_id"></h5>
+              Security
+            </div>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="height: 360px">
+            <div class="row">
+              <div class="col-md-12" style="height: 325px; overflow-y: scroll">
+                <div class="main-card mb-3 card">
+                  <div class="table-responsive">
+                    <table
+                      class="align-middle mb-0 table table-borderless table-striped table-hover"
+                      id="custom_security_table"
+                    >
+                      <thead id="custom_security_table_thead"></thead>
+                      <tbody id="custom_security_table_tbody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom Code Quality Modals End -->
+
+    <!-- Volumetric Analysis Interface Insight Start -->
+    <div
+      id="modal_external_system_integrated"
+      class="modal fade bd-example-modal-lg"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="widget-subheading opacity-7">
+              <h5 class="modal-title" id="overall_modal_title_id"></h5>
+              External System Integrated
+            </div>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="height: 360px">
+            <div class="row">
+              <div class="col-md-12" style="height: 325px; overflow-y: scroll">
+                <div class="main-card mb-3 card">
+                  <div class="table-responsive">
+                    <table
+                      class="align-middle mb-0 table table-borderless table-striped table-hover"
+                      id="custom_external_system_table"
+                    >
+                      <thead>
+                        <tr>
+                          <th>External System Name</th>
+                          <th>Description</th>
+                        </tr>
+                      </thead>
+                      <tbody id="custom_external_system_table_tbody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Volumetric Analysis Interface Insight Ends -->
+
+    <div
+      id="modal_artifacts"
+      class="modal fade bd-example-modal-lg"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="widget-subheading opacity-7">
+              <h5 class="modal-title" id="overall_modal_title_id"></h5>
+              Artifacts wise custom object usage
+            </div>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div
+                  class="main-card mb-3 card card-body"
+                  style="overflow-y: scroll"
+                >
+                  <div class="table-responsive">
+                    <table
+                      class="align-middle mb-0 table table-borderless table-striped table-hover"
+                      id="custom_artifacts_chart"
+                    >
+                      <thead>
+                        <tr>
+                          <th>Object Type</th>
+                          <th>Count in Inventory</th>
+                          <th>Count in Usage Log</th>
+                          <th>Usage %</th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        id="usage_analysis_artifacts_wise_graph_icon_tbody"
+                      >
+                        <tr>
+                          <td>Reports</td>
+                          <td>1541</td>
+                          <td>598</td>
+                          <td>38.80%</td>
+                        </tr>
+                        <tr>
+                          <td>Conversion - BDC</td>
+                          <td>307</td>
+                          <td>108</td>
+                          <td>35.17%</td>
+                        </tr>
+                        <tr>
+                          <td>Transaction Code</td>
+                          <td>1808</td>
+                          <td>723</td>
+                          <td>39.98%</td>
+                        </tr>
+                        <tr>
+                          <td>Classes</td>
+                          <td>185</td>
+                          <td>70</td>
+                          <td>37.83%</td>
+                        </tr>
+                        <tr>
+                          <td>Function Modules</td>
+                          <td>1203</td>
+                          <td>461</td>
+                          <td>38.32%</td>
+                        </tr>
+                        <tr>
+                          <td>Dialog Programs</td>
+                          <td>54</td>
+                          <td>19</td>
+                          <td>35.18%</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="modal_adapter_modules"
+      class="modal fade bd-example-modal-lg show"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-modal="true"
+      style="display: none"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="widget-subheading opacity-7">
+              <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+              <span id="sub_process_name"></span>
+            </div>
+            <button
+              type="button"
+              class="close"
+              onclick="closeModal();"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="height: 360px">
+            <div class="row">
+              <div class="col-md-12">
+                <div
+                  class="mb-3 card card-body"
+                  style="height: 325px; overflow-y: scroll"
+                >
+                  <table
+                    class="align-middle mb-0 table table-borderless table-striped table-hover"
+                    id="adapter_table"
+                  >
+                    <thead>
+                      <tr>
+                        <th>Adapter Modules</th>
+                      </tr>
+                    </thead>
+
+                    <tbody id="adapter_table_tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="closeModal();"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="modal_transreq_monthwise"
+      class="modal fade bd-example-modal-lg show"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-modal="true"
+      style="display: none"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="widget-subheading opacity-7">
+              <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+              <span id="sub_monthwise_name"></span>
+            </div>
+            <button
+              type="button"
+              class="close"
+              onclick="closeModal();"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="height: 320px">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="table-responsive">
+                  <table
+                    class="align-middle mb-0 table table-borderless table-striped table-hover"
+                  >
+                    <thead>
+                      <tr>
+                        <th>Types</th>
+                        <th>Count</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Files</td>
+                        <td>5</td>
+                      </tr>
+                      <tr>
+                        <td>CTS</td>
+                        <td>3</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="closeModal();"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="modal_sender_interface"
+      class="modal fade bd-example-modal-lg show"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-modal="true"
+      style="display: none"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="widget-subheading opacity-7">
+              <h5 class="modal-title" id="exampleModalLongTitle">
+                Sender Receiver Component Details
+              </h5>
+              <span id="sub_sender_name"></span>
+            </div>
+            <button
+              type="button"
+              class="close"
+              onclick="closeModal();"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="height: 360px">
+            <div class="row">
+              <div class="col-md-12">
+                <div
+                  class="mb-3 card card-body"
+                  style="height: 325px; overflow-y: scroll"
+                >
+                  <h5 class="card-title"></h5>
+                  <table
+                    class="align-middle mb-0 table table-borderless table-striped table-hover"
+                    id="sender_receiver_table"
+                  >
+                    <thead>
+                      <tr>
+                        <th>Components</th>
+                        <th>Sender Components</th>
+                        <th>Receiver Components</th>
+                        <th>Total</th>
+                      </tr>
+                    </thead>
+
+                    <tbody id="sender_receiver_table_tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="closeModal();"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="modal_communication_channel"
+      class="modal fade bd-example-modal-lg show"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-modal="true"
+      style="display: none"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="widget-subheading opacity-7">
+              <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+              <span id="sub_communication_channel_name"></span>
+            </div>
+            <button
+              type="button"
+              class="close"
+              onclick="closeModal();"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="height: 360px">
+            <div class="row">
+              <div class="col-md-12">
+                <div
+                  class="mb-3 card card-body"
+                  style="height: 325px; overflow-y: scroll"
+                >
+                  <table
+                    class="align-middle mb-0 table table-borderless table-striped table-hover"
+                    id="communication_channel_table"
+                  >
+                    <thead>
+                      <tr>
+                        <th>Party</th>
+                        <th>Component</th>
+                        <th>Channel</th>
+                      </tr>
+                    </thead>
+                    <tbody id="communication_channel_table_tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="closeModal();"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="modal_component_sender_receiver"
+      class="modal fade bd-example-modal-lg show"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-modal="true"
+      style="display: none"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="widget-subheading opacity-7">
+              <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+              <span id="sub_component_sender_receiver_name"></span>
+            </div>
+            <button
+              type="button"
+              class="close"
+              onclick="closeModal();"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="height: 320px">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="table-responsive">
+                  <table
+                    class="align-middle mb-0 table table-borderless table-striped table-hover"
+                  >
+                    <thead>
+                      <tr>
+                        <th>Component Name</th>
+                        <th>Count</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>BS_QE1_200</td>
+                        <td>20</td>
+                      </tr>
+                      <tr>
+                        <td>BS_QC1_200</td>
+                        <td>10</td>
+                      </tr>
+                      <tr>
+                        <td>BS_Q01_010</td>
+                        <td>10</td>
+                      </tr>
+                      <tr>
+                        <td>BC_ITSM</td>
+                        <td>10</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="closeModal();"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="modal_component_det_sender_receiver"
+      class="modal fade bd-example-modal-lg show"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-modal="true"
+      style="display: none"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="widget-subheading opacity-7">
+              <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+              <span id="sub_component_det_sender_receiver_name"></span>
+            </div>
+            <button
+              type="button"
+              class="close"
+              onclick="closeModal();"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="height: 360px">
+            <div class="row">
+              <div class="col-md-12">
+                <div
+                  class="mb-3 card card-body"
+                  style="height: 325px; overflow-y: scroll"
+                >
+                  <table
+                    class="align-middle mb-0 table table-borderless table-striped table-hover"
+                    id="component_det_sender_receiver_table"
+                  >
+                    <thead>
+                      <tr>
+                        <th>SenderPartyId</th>
+                        <th>ReceiverPartyId</th>
+                        <th>SenderComponentId</th>
+                        <th>ReceiverComponentId</th>
+                        <th>SenderInterface</th>
+                        <th>SenderNamespace</th>
+                        <th>ReceiverInterface</th>
+                        <th>ReceiverNamespace</th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      id="component_det_sender_receiver_table_tbody"
+                    ></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="closeModal();"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="modal_comp_communication_channel"
+      class="modal fade bd-example-modal-lg show"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-modal="true"
+      style="display: none"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="widget-subheading opacity-7">
+              <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+              <span id="sub_comp_communication_channel_name"></span>
+            </div>
+            <button
+              type="button"
+              class="close"
+              onclick="closeModal();"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="height: 360px">
+            <div class="row">
+              <div class="col-md-12">
+                <div
+                  class="mb-3 card card-body"
+                  style="height: 325px; overflow-y: scroll"
+                >
+                  <table
+                    class="align-middle mb-0 table table-borderless table-striped table-hover"
+                    id="communication_comp_channel_table"
+                  >
+                    <thead>
+                      <tr>
+                        <th>Party</th>
+                        <th>Component</th>
+                        <th>Channel</th>
+                      </tr>
+                    </thead>
+                    <tbody id="communication_comp_channel_table_tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="closeModal();"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="modal_comp_adapter_modules"
+      class="modal fade bd-example-modal-lg show"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-modal="true"
+      style="display: none"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="widget-subheading opacity-7">
+              <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+              <span id="sub_comp_process_name"></span>
+            </div>
+            <button
+              type="button"
+              class="close"
+              onclick="closeModal();"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="height: 360px">
+            <div class="row">
+              <div class="col-md-12">
+                <div
+                  class="mb-3 card card-body"
+                  style="height: 325px; overflow-y: scroll"
+                >
+                  <table
+                    class="align-middle mb-0 table table-borderless table-striped table-hover"
+                    id="comp_adapter_table"
+                  >
+                    <thead>
+                      <tr>
+                        <th>Adapter Modules</th>
+                      </tr>
+                    </thead>
+
+                    <tbody id="comp_adapter_table_tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="closeModal();"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $("#side-bar").load("header.html");
+
+      $(window).bind("load", function () {
+        $(document).ready(function () {
+          setTimeout(function () {
+            $("#custom_developments").addClass("mm-active");
+          }, 300);
+        });
+      });
+    </script>
+    <script
+      type="text/javascript"
+      src="./assets/js/gauge/gauge_demo.js"
+    ></script>
+    -->
+    <script type="text/javascript" src="./assets/js/color.js"></script>
+
+    <script type="text/javascript" src="./assets/scripts/custom.js"></script>
+
+    <script src="./assets/js/bootstrap.min.js"></script>
+    <script
+      type="text/javascript"
+      src="./assets/resources/property.property"
+    ></script>
+
+    <!--Custom Developments -->
+    <script
+      type="text/javascript"
+      defer
+      src="./assets/scripts/custom_developments.js"
+    ></script>
+  </body>
+
+  <script>
+    $("#tab-ps-overview,#tab-ps-pps,#tab-ps-pp,#tab-ps-pem,#tab-ps-pfm").click(
+      function () {
+        $("#tab-ps-pf,#tab-ps-pa").removeClass("active");
+      }
+    );
+
+    $("#tab-ps-pf,#tab-ps-pa").click(function () {
+      $(
+        "#tab-ps-overview,#tab-ps-pps,#tab-ps-pp,#tab-ps-pem,#tab-ps-pfm"
+      ).removeClass("active");
+    });
+
+    //ptp overview carousel
+    $(
+      "#tab-ptp-overview,#tab-ptp-md,#tab-ptp-sc,#tab-ptp-os,#tab-ptp-op,#tab-ptp-inv"
+    ).click(function () {
+      $("#tab-ptp-invoice").removeClass("active");
+    });
+
+    $("#tab-ptp-invoice").click(function () {
+      $(
+        "#tab-ptp-overview,#tab-ptp-md,#tab-ptp-sc,#tab-ptp-os,#tab-ptp-op,#tab-ptp-inv"
+      ).removeClass("active");
+    });
+
+    //EAM overview carousel
+    $(
+      "#tab_eam_overview_button,#tab-eam-master-data,#tab-eam-main-work,#tab-eam-turnaround"
+    ).click(function () {
+      $("#tab-eam-monitor").removeClass("active");
+    });
+
+    $("#tab-eam-monitor").click(function () {
+      $(
+        "#tab_eam_overview_button,#tab-eam-master-data,#tab-eam-main-work,#tab-eam-turnaround"
+      ).removeClass("active");
+    });
+    //-------------------------------------COLOR JSON-----------------------------------------------------
+
+    $(document).ready(function () {
+      $("#tbl-os-mat-planning").DataTable({
+        scrollY: "200px",
+        searching: false,
+        scrollCollapse: true,
+        paging: false,
+      });
+    });
+    $(document).ready(function () {
+      $("#tbl-os-mat-planning1").DataTable({
+        scrollY: "200px",
+        searching: false,
+        scrollCollapse: true,
+        paging: false,
+      });
+    });
+    $(document).ready(function () {
+      $("#tbl-os-mat-planning2").DataTable({
+        scrollY: "200px",
+        searching: false,
+        scrollCollapse: true,
+        paging: false,
+      });
+    });
+    $(document).ready(function () {
+      $("#tbl-os-mat-planning3").DataTable({
+        scrollY: "200px",
+        searching: false,
+        scrollCollapse: true,
+        paging: false,
+      });
+    });
+    $(document).ready(function () {
+      $("#tbl-os-mat-planning4").DataTable({
+        scrollY: "200px",
+        searching: false,
+        scrollCollapse: true,
+        paging: false,
+      });
+    });
+    $(document).ready(function () {
+      $("#tbl-os-mat-planning5").DataTable({
+        scrollY: "200px",
+        searching: false,
+        scrollCollapse: true,
+        paging: false,
+      });
+    });
+    $(document).ready(function () {
+      $("#tbl-os-mat-planning6").DataTable({
+        scrollY: "200px",
+        searching: false,
+        scrollCollapse: true,
+        paging: false,
+      });
+    });
+    $(document).ready(function () {
+      $("#tbl-os-mat-planning7").DataTable({
+        scrollY: "200px",
+        searching: false,
+        scrollCollapse: true,
+        paging: false,
+      });
+    });
+
+    $(document).ready(function () {
+      $("#tbl-os-mat-planning8").DataTable({
+        scrollY: "200px",
+        searching: false,
+        scrollCollapse: true,
+        paging: false,
+      });
+    });
+    $(document).ready(function () {
+      $("#tbl-os-mat-planning8").DataTable({
+        scrollY: "200px",
+        searching: false,
+        scrollCollapse: true,
+        paging: false,
+      });
+    });
+
+    $(".process-tray").toggle();
+
+    $("#process_indicator1").click(function () {
+      $("#otc_buss_process").find(".process-tray").toggle();
+    });
+
+    $("#process_indicator2").click(function () {
+      $("#tab_overview_rtr").find(".process-tray").toggle();
+    });
+
+    $("#process_indicator3").click(function () {
+      $("#tab_overview_eam").find(".process-tray").toggle();
+    });
+
+    $("#process_indicator4").click(function () {
+      $("#tab_master_data_ptd").find(".process-tray").toggle();
+    });
+
+    $("#ps_process_indicator").click(function () {
+      $("#tab_ps_overview").find(".process-tray").toggle();
+    });
+    //
+  </script>
+  <script>
+    $("#top-bar").load("username_header.html");
+  </script>
+
+  <script type="text/javascript" src="./assets/scripts/main.js"></script>
+  <script src="./assets/js/chart.min.js"></script>
+</html>

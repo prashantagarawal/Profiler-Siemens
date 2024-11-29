@@ -1,0 +1,29 @@
+{
+	"xsappname": "profiler",
+	"tenant-mode": "dedicated",
+	"scopes": [
+		{
+			"name": "$XSAPPNAME.read",
+			"description": "With this scope, USER can access profiler."
+		}
+	],
+
+	"role-templates": [
+		{
+			"name": "Viewer",
+			"description": "Role to access profiler",
+			"scope-references": [
+				"$XSAPPNAME.read"
+			]
+		}
+	],
+	"role-collections": [
+		{
+			"name": "profilerViewer",
+			"description": "profilere Viewer",
+			"role-template-references": [
+				"$XSAPPNAME.Viewer"
+			]
+		}
+	]
+}

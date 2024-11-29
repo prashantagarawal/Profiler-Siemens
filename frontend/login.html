@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Language" content="en" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Profiler 2.0</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Wide selection of cards with multiple styles, borders, actions and hover effects."
+    />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <link href="./main.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+    />
+  </head>
+  <link href="./assets/css/custom.css" rel="stylesheet" />
+  <link
+    href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    rel="stylesheet"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+    crossorigin="anonymous"
+  />
+  <style>
+    .field-icon {
+      float: right;
+      margin-left: -20px;
+      margin-top: -25px;
+      position: relative;
+      z-index: 2;
+    }
+    .background-radial-gradient {
+      background-color: #f2f2f2;
+    }
+
+    #radius-shape-1 {
+      height: 180px;
+      width: 190px;
+      top: -8px;
+      left: -120px;
+      background: radial-gradient(#fdfdfd, #cccccc);
+      overflow: hidden;
+    }
+
+    #radius-shape-2 {
+      border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
+      bottom: -30px;
+      right: -70px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(#cccccc, #cccccc);
+      overflow: hidden;
+    }
+
+    .bg-glass {
+      background-color: hsla(0, 0%, 100%, 0.9) !important;
+      backdrop-filter: saturate(200%) blur(25px);
+    }
+  </style>
+  <style>
+    .logo {
+      border-radius: 2px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .logo:hover {
+      opacity: 0.7;
+    }
+
+    .system-icon {
+      float: right;
+      padding-right: 15%;
+      opacity: 0.7;
+    }
+
+    .card-body:hover .system-icon {
+      opacity: 1;
+      transform: scale(1.5);
+    }
+
+    .client-title-grey {
+      padding-top: 1%;
+      background-image: radial-gradient(
+        white,
+        rgb(214, 214, 210),
+        rgb(148, 148, 148)
+      );
+      margin: 0%;
+    }
+
+    .module-box {
+      width: 300px;
+      height: 100px;
+      border: 1px solid blue;
+      box-sizing: border-box;
+    }
+  </style>
+  <style>
+    .no-padding {
+      padding: 0px !important;
+    }
+
+    .top-margin30 {
+      margin-top: -30px !important;
+    }
+
+    .tile-icon {
+      font-size: 28px;
+      margin-right: 10px;
+    }
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: bold;
+      font-family: monospace;
+    }
+
+    .card.mb-3 {
+      margin-bottom: 10px !important;
+    }
+
+    .card-disabled {
+      background-color: #e9ecef;
+      border-color: #bdbdbd;
+    }
+
+    .card-title-disabled {
+      text-transform: uppercase;
+      color: #bdbdbd;
+      font-weight: bold;
+      font-size: 0.88rem;
+    }
+
+    .card {
+      border: none;
+      border-radius: 10px;
+    }
+
+    .c-details span {
+      font-weight: 300;
+      font-size: 13px;
+    }
+
+    .icon {
+      width: 50px;
+      height: 50px;
+      background-color: #eee;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 39px;
+    }
+
+    .badge span {
+      background-color: #fffbec;
+      width: 60px;
+      height: 25px;
+      padding-bottom: 3px;
+      border-radius: 5px;
+      display: flex;
+      color: #fed85d;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .progress {
+      height: 10px;
+      border-radius: 10px;
+    }
+
+    .progress div {
+      background-color: red;
+    }
+
+    .text1 {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .text2 {
+      color: #a5aec0;
+    }
+  </style>
+
+  <script>
+    // window.Promise ||
+    //     document.write(
+    //         '<script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"><\/script>'
+    //     )
+    // window.Promise ||
+    //     document.write(
+    //         '<script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20171210/classList.min.js"><\/script>'
+    //     )
+    // window.Promise ||
+    //     document.write(
+    //         '<script src="https://cdn.jsdelivr.net/npm/findindex_polyfill_mdn"><\/script>'
+    //     )
+  </script>
+
+  <script src="./assets/js/apexcharts.js"></script>
+  <script src="./assets/js/jquery.js"></script>
+  <script src="./assets/js/underscore.js"></script>
+  <script type="text/javascript" src="./assets/js/datatable.min.js"></script>
+
+  <script>
+    // Replace Math.random() with a pseudo-random number generator to get reproducible results in e2e tests
+    // Based on https://gist.github.com/blixt/f17b47c62508be59987b
+    var _seed = 42;
+    Math.random = function () {
+      _seed = (_seed * 16807) % 2147483647;
+      return (_seed - 1) / 2147483646;
+    };
+  </script>
+
+  <body>
+    <!-- Templates -->
+
+    <div
+      class="app-container app-theme-white body-tabs-shadow fixed-header closed-sidebar-mobile"
+      style="background-color: #f2f2f2"
+    >
+      <div id="top-bar"></div>
+
+      <div class="app-main">
+        <div class="app-main__outer">
+          <div class="app-main__inner">
+            <div
+              class="app-page-title no-bottom-margin"
+              style="padding-top: 8px; padding-bottom: 8px"
+            >
+              <div class="page-title-wrapper"></div>
+            </div>
+
+            <div class="tab-content" style="margin: 8%">
+              <div
+                class="tab-pane tabs-animation fade active show"
+                id="home"
+                role="tabpanel"
+              >
+                <div
+                  class="tab-pane tabs-animation fade active show"
+                  id=""
+                  role="tabpanel"
+                >
+                  <!-- Section: Design Block -->
+                  <section
+                    class="background-radial-gradient overflow-hidden"
+                    style="margin-top: 0%"
+                  >
+                    <div class="container" style="margin: auto">
+                      <div class="row gx-lg-5 align-items-center mb-4">
+                        <div
+                          class="col-lg-6 mb-5 mb-lg-0 position-relative"
+                          style="margin: auto"
+                        >
+                          <div class="card bg-glass">
+                            <div class="card-body px-4 py-3 px-md-5">
+                              <h5
+                                style="text-align: center"
+                                id="LoginFormTitle"
+                              >
+                                LOGIN
+                              </h5>
+                              <br />
+
+                              <!-- Email input -->
+                              <div class="form-outline mb-4">
+                                <input
+                                  type="text"
+                                  id="userID"
+                                  class="form-control"
+                                  placeholder="Enter the username"
+                                />
+                              </div>
+
+                              <!-- Password input -->
+                              <div class="form-outline mb-4">
+                                <input
+                                  type="password"
+                                  id="userPassword"
+                                  class="form-control"
+                                  placeholder="Enter the password"
+                                />
+                                <span
+                                  id="show"
+                                  toggle="#password-field"
+                                  class="fa fa-fw fa-eye field-icon toggle-password"
+                                  style="padding-right: 3%"
+                                ></span>
+                                <div
+                                  id="errorMessage"
+                                  style="
+                                    color: red;
+                                    display: none;
+                                    text-align: left;
+                                  "
+                                >
+                                  *Invalid Username/Password
+                                </div>
+                              </div>
+
+                              <!-- Submit button -->
+                              <button
+                                type="submit"
+                                class="btn btn-primary btn-block mb-4"
+                                onclick="submitLogin()"
+                              >
+                                Login
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                  <!-- Section: Design Block -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $(".toggle-password").click(function () {
+        $(this).toggleClass("fa-eye fa-eye-slash");
+        var x = document.getElementById("userPassword");
+        if (x.type === "password") {
+          x.type = "text";
+        } else {
+          x.type = "password";
+        }
+      });
+    </script>
+    <script type="text/javascript" src="./assets/scripts/custom.js"></script>
+
+    <script type="text/javascript" src="./assets/js/color.js"></script>
+    <!-- property file -->
+    <script
+      type="text/javascript"
+      src="./assets/resources/property.property"
+    ></script>
+    <script type="text/javascript" src="./assets/scripts/login.js"></script>
+  </body>
+
+  <script>
+    $("#top-bar").load("username_header.html");
+  </script>
+  <script type="text/javascript" src="./assets/scripts/main.js"></script>
+</html>

@@ -1,0 +1,952 @@
+<!doctype html>
+<html lang="en" style="background-color: rgb(243, 243, 243);">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="Content-Language" content="en">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Profiler 2.0</title>
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+	<meta name="description"
+		content="Wide selection of cards with multiple styles, borders, actions and hover effects.">
+	<meta name="msapplication-tap-highlight" content="no">
+	<link href="./main.css" rel="stylesheet">
+	<link href="./assets/css/custom.css" rel="stylesheet">
+
+	</script>
+</head>
+<style>
+	.fixTableHead {
+		overflow-y: auto;
+		max-height: 400px;
+	}
+
+	.fixTableHead thead th {
+		position: sticky;
+		top: 0;
+	}
+
+	table {
+		border-collapse: collapse;
+		width: 100%;
+	}
+
+	th,
+	td {
+		padding: 8px 15px;
+	}
+
+	th {
+		background: #b1d1ff;
+	}
+</style>
+<style>
+	table.fixed {
+		table-layout: fixed;
+	}
+</style>
+<style>
+	a.disabled {
+		pointer-events: none;
+		cursor: no-drop;
+	}
+
+	.Blink {
+		animation: blinker 1s cubic-bezier(.5, 0, 1, 1) infinite alternate;
+	}
+
+	@keyframes blinker {
+		from {
+			opacity: 1;
+		}
+
+		to {
+			opacity: 0;
+		}
+	}
+
+	.node {
+		cursor: pointer;
+	}
+
+	.node circle {
+		fill: #fff;
+	}
+
+	.node text {
+		font: 16px sans-serif;
+	}
+
+	.link {
+		fill: none;
+		stroke: #ccc;
+		stroke-width: 1.5px;
+	}
+
+
+	.no-padding {
+		padding: 0px !important;
+	}
+
+	.top-margin30 {
+		margin-top: -20px !important;
+	}
+
+	.tile-icon {
+		font-size: 28px;
+		margin-right: 10px;
+	}
+
+	.logo-text {
+		font-size: 24px;
+		font-weight: bold;
+		font-family: monospace;
+	}
+
+
+	.card.mb-3 {
+		margin-bottom: 10px !important;
+	}
+
+	.card-disabled {
+		background-color: #e9ecef;
+		border-color: #bdbdbd;
+	}
+
+	.card-title-disabled {
+		text-transform: uppercase;
+		color: #bdbdbd;
+		font-weight: bold;
+		font-size: .88rem;
+	}
+</style>
+<style>
+	.tooltip {
+		position: relative;
+		display: inline-block;
+		/* border-bottom: 1px dotted black; */
+	}
+
+	.tooltip .tooltiptext {
+		visibility: hidden;
+		width: 450px;
+		background-color: #3F6AD8;
+		color: #fff;
+		text-align: center;
+		border-radius: 6px;
+		padding: 2px 0;
+		font-size: 12px;
+		white-space: nowrap;
+
+		/* Position the tooltip */
+		position: absolute;
+		right: 60%;
+		z-index: 1;
+	}
+
+	.tooltip:hover .tooltiptext {
+		visibility: visible;
+	}
+</style>
+
+<style>
+	.tooltip1 {
+		position: relative;
+		display: inline-block;
+		/* border-bottom: 1px dotted black; */
+	}
+
+	.tooltip1 .tooltiptext {
+		visibility: hidden;
+		width: 120px;
+		background-color: #3F6AD8;
+		color: #fff;
+		text-align: left;
+		border-radius: 6px;
+		padding: 8px 0;
+		padding-left: 10px;
+		position: absolute;
+		z-index: 1;
+		bottom: 100%;
+		left: 50%;
+		margin-left: -80px;
+		font-size: small;
+	}
+
+	.tooltip1 .tooltiptext::after {
+		content: "";
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		margin-left: -5px;
+		border-width: 5px;
+		border-style: solid;
+		border-color: #555 transparent transparent transparent;
+	}
+
+	.tooltip1:hover .tooltiptext {
+		visibility: visible;
+	}
+</style>
+
+<style>
+	/* Popup container - can be anything you want */
+	.popup {
+		position: relative;
+		display: inline-block;
+		cursor: pointer;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+
+	/* The actual popup */
+	.popup .popuptext {
+		visibility: hidden;
+		width: 220px;
+		background-color: #3F6AD8;
+		color: #fff;
+		text-align: left;
+		border-radius: 6px;
+		padding: 5px 0;
+		padding-left: 10px;
+		position: absolute;
+		z-index: 1;
+		bottom: 125%;
+		left: -900%;
+		margin-left: -80px;
+	}
+
+	/* Popup arrow */
+	.popup .popuptext::after {
+		content: "";
+		position: absolute;
+		top: 100%;
+		left: 80%;
+		margin-left: -6px;
+		border-width: 5px;
+		border-style: solid;
+		border-color: #555 transparent transparent transparent;
+	}
+
+	/* Toggle this class - hide and show the popup */
+	.popup .show {
+		visibility: visible;
+		-webkit-animation: fadeIn 1s;
+		animation: fadeIn 1s;
+	}
+
+	/* Add animation (fade in the popup) */
+	@-webkit-keyframes fadeIn {
+		from {
+			opacity: 0;
+		}
+
+		to {
+			opacity: 1;
+		}
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+		}
+
+		to {
+			opacity: 1;
+		}
+	}
+</style>
+
+<script>
+	function popUpFunc() {
+		var popup = document.getElementById("myPopup");
+		popup.classList.toggle("show");
+	}
+	function popUpFunc1() {
+		var popup1 = document.getElementById("myPopup1");
+		popup1.classList.toggle("show");
+	}
+</script>
+
+
+<script src="./assets/js/apexcharts.js"></script>
+<script src="./assets/js/jquery.js"></script>
+<script src="./assets/js/bootstrap.min.js"></script>
+<!-- property file -->
+<script type="text/javascript" src="./assets/resources/property.property"></script>
+
+<script type="text/javascript" src="./assets/js/datatable.min.js"></script>
+<script src="./assets/js/table2excel.js"></script>
+<script>
+	var _seed = 42
+	Math.random = function () {
+		_seed = (_seed * 16807) % 2147483647
+		return (_seed - 1) / 2147483646
+	}
+</script>
+
+
+<body>
+	<!-- Templates -->
+	<template id="top-bar-template">
+		<div class="app-header header-shadow">
+			<div class="app-header__logo">
+				<div class="logo-text">Profiler 2.0</div>
+				<div class="header__pane ml-auto">
+					<div>
+						<button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
+							data-class="closed-sidebar">
+							<span class="hamburger-box">
+								<span class="hamburger-inner"></span>
+							</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="app-header__mobile-menu">
+				<div>
+					<button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
+						<span class="hamburger-box">
+							<span class="hamburger-inner"></span>
+						</span>
+					</button>
+				</div>
+			</div>
+			<div class="app-header__menu">
+				<span>
+					<button type="button"
+						class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+						<span class="btn-icon-wrapper">
+							<i class="fa fa-ellipsis-v fa-w-6"></i>
+						</span>
+					</button>
+				</span>
+			</div>
+			<div class="app-header__content">
+				<div class="app-header-left">
+				</div>
+				<div class="app-header-right">
+					<div class="header-btn-lg pr-0">
+						<div class="widget-content p-0">
+							<div class="widget-content-wrapper">
+								<div class="widget-content-left">
+									<div class="btn-group">
+										<a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+											class="p-0 btn">
+											<img width="42" class="rounded-circle" src="assets/images/avatars/13.jpg"
+												alt="">
+											<i class="fa fa-angle-down ml-2 opacity-8"></i>
+										</a>
+										<div tabindex="-1" role="menu" aria-hidden="true"
+											class="dropdown-menu dropdown-menu-right">
+											<button type="button" tabindex="0" class="dropdown-item">User
+												Account</button>
+											<button type="button" tabindex="0" class="dropdown-item">Settings</button>
+											<h6 tabindex="-1" class="dropdown-header">Header</h6>
+											<button type="button" tabindex="0" class="dropdown-item">Actions</button>
+											<div tabindex="-1" class="dropdown-divider"></div>
+											<button type="button" tabindex="0" class="dropdown-item">Dividers</button>
+										</div>
+									</div>
+								</div>
+								<div class="widget-content-left  ml-3 header-user-info">
+									<div class="widget-heading">
+										Madhav Avhad
+									</div>
+									<div class="widget-subheading">
+										SAP Practice
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		
+	</template>
+
+
+	<div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+		<div id="top-bar"></div>
+
+		<div class="app-main">
+			<div id="side-bar"></div>
+
+			<div class="app-main__outer">
+				<div class="app-main__inner">
+					<div class="app-page-title no-bottom-margin">
+						<div class="page-title-wrapper">
+							<div class="page-title-heading">
+								<div class="page-title-icon">
+									<i class="pe-7s-upload icon-gradient bg-mean-fruit">
+									</i>
+								</div>
+								<div>Master Algorithm
+									<div class="page-title-subheading">Upload Data for All Modules
+									</div>
+								</div>
+							</div>
+							<div class="page-title-actions">
+								<ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav no-padding">
+
+									<li class="nav-item">
+										<a role="tab" class="nav-link active" id="tab_check_csv" data-toggle="tab"
+											href="#check_csv">
+											<span>CSV Structure Verification</span>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a role="tab" class="nav-link" id="tab_cus_dev_abap" data-toggle="tab" href="#cus_dev_abap">
+											<span>Custom Objects ABAP</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					<!-- Tab contents for different modules -->
+					<div class="tab-content">
+
+						<!-- Custom Development ABAP tab -->
+						<div class="tab-pane tabs-animation fade" id="cus_dev_abap" role="tabpanel">
+							<div id="carousel_custom_dev_abap_overview" class="carousel slide" data-interval="false"
+								style="margin-left: 2%;">
+								<div class="carousel-inner">
+									<div class="carousel-item active" id="custom_dev_abap_carousel_overview">
+										<ul
+											class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav top-margin30">
+											<li class="nav-item">
+												<a role="tab" class="nav-link active" id="tab_custom_dev_abap_all"
+													data-toggle="tab" href="#custom_dev_abap_all">
+													<span>Master Algorithm for Custom Development ABAP Details</span>
+												</a>
+											</li>
+											<li class="nav-item">
+												<a role="tab" class="nav-link " id="tab_custom_dev_abap_all_logs"
+													data-toggle="tab" href="#custom_dev_abap_all_logs">
+													<span>Logs </span>
+												</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+
+							<div class="tab-content">
+								<div class="tab-pane tabs-animation fade active show" id="custom_dev_abap_all"
+									role="tabpanel">
+
+									<div class="row">
+										<div class="col-md-12 col-xl-12">
+											<div class="main-card mb-3 card">
+												<div class="card-body">
+													<h5 class="card-title" style="font-size: medium;"> <i
+															class="fa fa-database"></i> &nbsp; Custom Development ABAP
+														Details -
+														Select files to Upload </h5>
+													<div class="divider"></div>
+													<div class="no-gutters row">
+														<div class="pt-0 pb-0 card-body">
+															<div class="col-md-12 col-lg-12">
+																<div class="main-card mb-3 card">
+																	<div class="row">
+																		<div class="col-md-9">
+																			<strong>Total Number Of JS Files :
+																			</strong><strong
+																				id="CUSTOM_DEV_ABAPTrCounts"></strong>
+																		</div>
+																		<div class="col-md-3">
+																			<label for="select-all-custom_dev_abap"
+																				style="float:right; font-weight: bolder;">Select
+																				All </label>
+																			<input type="checkbox" class="checkbox"
+																				name="select-all-custom_dev_abap"
+																				id="select-all-custom_dev_abap"
+																				style="float:right;  margin: 0.5%;" />
+																		</div>
+																	</div>
+																	<div class="fixTableHead">
+																		<table
+																			class="mb-0 table table-striped table-bordered"
+																			id="custom_dev_abap_all_Table"
+																			style="text-align: left;">
+																			<thead>
+																				<tr>
+																					<th>SCREEN</th>
+																					<th>JS FILE</th>
+																					<th>SELECT FILE</th>
+																					<th>Total csvs Required</th>
+																					<th>Total csvs Received</th>
+																				</tr>
+																			</thead>
+																			<tbody>
+																				<tr>
+																					<td>Custom Objects ABAP - Custom Code Quality Detail</td>
+																					<td
+																						id="cd_abap_custom_code_quality.js">
+																						cd_abap_custom_code_quality.js
+																					</td>
+																					<td><input type="checkbox"
+																							class="checkbox"></td>
+																				</tr>
+																				<tr>
+																					<td>Custom Objects ABAP - Interface Insights
+																						Detail</td>
+																					<td
+																						id="cd_abap_interface_insight.js">
+																						cd_abap_interface_insight.js</td>
+																					<td><input type="checkbox"
+																							class="checkbox"></td>
+																				</tr>
+																				<tr>
+																					<td>Custom Objects ABAP - System
+																						Details</td>
+																					<td
+																						id="cd_abap_system_details.js">
+																						cd_abap_system_details.js
+																					</td>
+																					<td><input type="checkbox"
+																							class="checkbox"></td>
+																				</tr>
+																				<tr>
+																					<td>Custom Objects ABAP - Transport Req Analysis
+																						Detail</td>
+																					<td
+																						id="cd_abap_transport_req.js">
+																						cd_abap_transport_req.js
+																					</td>
+																					<td><input type="checkbox"
+																							class="checkbox"></td>
+																				</tr>
+																				<tr>
+																					<td>Custom Objects ABAP - Usage Analysis Detail</td>
+																					<td
+																						id="cd_abap_usage_analysis.js">
+																						cd_abap_usage_analysis.js
+																					</td>
+																					<td><input type="checkbox"
+																							class="checkbox"></td>
+																				</tr>
+																				<tr>
+																					<td>Custom Objects ABAP - Volumetric Analysis Detail</td>
+																					<td id="cd_abap_volumetric_analysis.js">
+																						cd_abap_volumetric_analysis.js</td>
+																					<td><input type="checkbox"
+																							class="checkbox"></td>
+																				</tr>
+																			</tbody>
+																		</table>
+																	</div>
+																	<br>
+																	<div class="card-footer">
+																		<div class="col-md-12">
+																			<button class="btn btn-primary submit"
+																				style="float: right;"
+																				onclick="submitFunction('custom_dev_abap_all_Table', 'CUSTOM_DEV_ABAP_Details_And_Overviews')"
+																				type="submit" disabled> Submit </button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</div>
+
+								<div class="tab-pane tabs-animation fade" id="custom_dev_abap_all_logs" role="tabpanel">
+
+									<div class="row">
+										<div class="col-lg-3 col-xl-3">
+											<div class="card mb-3 widget-content">
+												<div class="widget-content-wrapper">
+													<div class="widget-content-left">
+
+														<div class="widget-heading">Total Files Executed</div>
+														<div class="widget-subheading"></div>
+													</div>
+													<div class="widget-content-right">
+														<div class="widget-numbers text-primary count"
+															id="CUSTOM_DEV_ABAP_All_Files">0</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-3 col-xl-3">
+											<div class="card mb-3 widget-content">
+												<div class="widget-content-wrapper">
+													<div class="widget-content-left">
+														<div class="widget-heading">Files Executed Successfully</div>
+														<div class="widget-subheading"> </div>
+													</div>
+													<div class="widget-content-right">
+														<div class="widget-numbers count" id="CUSTOM_DEV_ABAP_Success">0
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-3 col-xl-3">
+											<div class="card mb-3 widget-content">
+												<div class="widget-content-wrapper">
+													<div class="widget-content-left">
+
+														<div class="widget-heading">Total Collections Created</div>
+														<div class="widget-subheading"></div>
+													</div>
+													<div class="widget-content-right">
+														<div class="widget-numbers text-warning count"
+															id="CUSTOM_DEV_ABAP_All_Collections_Created">0</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-3 col-xl-3">
+											<div class="card mb-3 widget-content">
+												<div class="widget-content-wrapper">
+													<div class="widget-content-left">
+														<div class="widget-heading">Total Collections Deleted</div>
+														<div class="widget-subheading"> </div>
+													</div>
+													<div class="widget-content-right">
+														<div class="widget-numbers count text-warning"
+															id="CUSTOM_DEV_ABAP_All_Collections_Deleted">0</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</div>
+
+									<div class="no-gutters row">
+										<div class="col-md-12 col-xl-12">
+											<div class="main-card mb-3 card">
+												<div class="card-body">
+													<h5 class="card-title" style="font-size: medium;"> <i
+															class="fa fa-database"></i> &nbsp; Custom Development Logs
+													</h5>
+													<div class="divider"></div>
+													<div class="main-card mb-3 card">
+														<table style="text-align: left;"
+															class="mb-0 table table-striped fixed"
+															id="CUSTOM_DEV_ABAP_Details_And_Overviews">
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Check CSV tab -->
+						<div class="tab-pane tabs-animation fade active show" id="check_csv" role="tabpanel">
+							<div id="carousel_check_csv_overview" class="carousel slide" data-interval="false"
+								style="margin-left: 2%;">
+								<div class="carousel-inner">
+									<div class="carousel-item active" id="check_csv_carousel_overview">
+										<ul
+											class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav top-margin30">
+											<li class="nav-item">
+												<a role="tab" class="nav-link active" id="tab_check_csv_all"
+													data-toggle="tab" href="#check_csv_all">
+													<span>Check CSV</span>
+												</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+
+							<div class="tab-content">
+								<div class="tab-pane tabs-animation fade active show" id="check_csv_all"
+									role="tabpanel">
+									<div class="main-card mb-3 card">
+										<div class="card-header-tab card-header" style="height: 2.5rem;">
+											<div class="card-header-title" style="font-size: medium;"><i
+													class="fa fa-database"></i>
+												&nbsp; CSV Verification
+											</div>
+										</div>
+										<div class="no-gutters row">
+
+											<div class="col-md-12 col-xl-12">
+												<div class="card-body">
+													<div class="custom-border-left" style="max-width:100%;">
+														<table>
+															<thead>
+																<tr>
+																	<th> Module</th>
+																	<th> Total CSVs Required</th>
+																	<th> CSVs Provided</th>
+																	<th> CSVs To Be Validated</th>
+																	<th> Run Check CSV</th>
+																	<th> No of Correct CSVs </th>
+																	<th> CSVs yet to Receive</th>
+																	<th> Go to Master Algo</th>
+																</tr>
+															</thead>
+															<tbody id="moduleWiseCSVCount">
+															</tbody>
+														</table>
+													</div>
+
+												</div>
+											</div>
+										</div>
+
+									</div>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Busy Indicator -->
+					<div id="loader" style="display: none;margin-top: 15%;">
+						<div class="d-flex justify-content-center">
+							<div class="spinner-border text-primary" role="status" aria-hidden="true"></div>
+							<strong>&nbsp; &nbsp; Your request is processing. <br>&nbsp; &nbsp; Do not Refresh the Page.
+							</strong>
+						</div>
+					</div>
+				</div>
+
+
+				<!-- Page Footer -->
+				<div class="app-wrapper-footer">
+					<div class="app-footer">
+						<div class="app-footer__inner">
+
+							<div class="app-footer-right">
+								<ul class="nav">
+
+									<li class="nav-item">
+										<a href="javascript:void(0);" class="nav-link">
+											<img src="assets/images/LTI_logo.png" width="30">
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal to display error stack -->
+	<div id="overall_modal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+		aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div class="widget-subheading opacity-7">
+						<h5 class="modal-title"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp Error
+							Log</h5>
+						<div id="overall_modal_title_description"></div>
+					</div>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="main-card mb-3 card" id="ModalBody" style="padding: 1%;">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal to display check CSV result -->
+	<div id="check_csv_modal" class="modal fade bd-example-modal-lg show" tabindex="-1" role="dialog"
+		aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div class="widget-subheading opacity-7">
+						<h5 class="modal-title" id="check_csv_modal_title"><i class="fa fa-exclamation-circle"
+								aria-hidden="true"></i>&nbsp Check
+							Csv Logs</h5>
+						<div id="check_csv_modal_title_description"></div>
+					</div>
+					<button type="button" class="close" data-dismiss="modal" onclick="location.reload()"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="main-card mb-3 card" id="check_csv_modal_body" style="padding: 1%;">
+								<div id="check_csv_modal_details">
+									<div class="row">
+										<div class="col-lg-3 col-xl-3">
+											<div class="card mb-3 widget-content">
+												<div class="widget-content-wrapper">
+													<div class="widget-content-left">
+
+														<div class="widget-heading">CSVs Required</div>
+														<div class="widget-subheading"></div>
+													</div>
+													<div class="widget-content-right">
+														<div class="widget-numbers text-primary count"
+															id="csvs_required">0</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-3 col-xl-3">
+											<div class="card mb-3 widget-content">
+												<div class="widget-content-wrapper">
+													<div class="widget-content-left">
+														<div class="widget-heading">CSVs Received</div>
+														<div class="widget-subheading"> </div>
+													</div>
+													<div class="widget-content-right">
+														<div class="widget-numbers text-primary count"
+															id="csvs_recieved">0</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-3 col-xl-3">
+											<div class="card mb-3 widget-content">
+												<div class="widget-content-wrapper">
+													<div class="widget-content-left">
+
+														<div class="widget-heading">Correct CSVs</div>
+														<div class="widget-subheading"></div>
+													</div>
+													<div class="widget-content-right">
+														<div class="widget-numbers text-primary count"
+															id="correct_csvs">0</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-3 col-xl-3">
+											<div class="card mb-3 widget-content">
+												<div class="widget-content-wrapper">
+													<div class="widget-content-left">
+														<div class="widget-heading">Incorrect CSVs</div>
+														<div class="widget-subheading"> </div>
+													</div>
+													<div class="widget-content-right">
+														<div class="widget-numbers count text-primary"
+															id="incorrect_csvs">0</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</div>
+								</div>
+								<div class="fixTableHead">
+									<table>
+										<thead>
+											<tr>
+												<th>Csv Name</th>
+												<th>Message</th>
+												<th>Result</th>
+											</tr>
+										</thead>
+										<tbody id="check_csv_modal_tbody">
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal"
+						onclick="location.reload()">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$(function () {
+			$(".checkbox").click(function () {
+				$(this).closest('.main-card').find('button').prop('disabled', $(this).closest('.main-card').find('input.checkbox:checked').length == 0);
+				// console.log(thischeck)
+			});
+
+			$(".radio").click(function () {
+				$(this).closest('.main-card').find('button').prop('disabled', $(this).closest('.main-card').find('input.radio:checked').length == 0);
+				// console.log(thischeck)
+			});
+		});
+	</script>
+	<script>
+		$('#CUSTOM_DEV_ABAPTrCounts').text($('#custom_dev_abap_all_Table >tbody >tr').length)
+	</script>
+
+	<script>
+
+		
+		//Custom Dev ABAP All
+		$('#select-all-custom_dev_abap').bind('click', function () {
+			var checkedState = this.checked;
+			$('#custom_dev_abap_all_Table :checkbox').each(function () {
+				if (!this.disabled) {
+					this.checked = checkedState;
+				}
+			});
+		});
+
+		$('#side-bar').load("header.html");
+
+		$(window).bind("load", function () {
+			$(document).ready(function () {
+				setTimeout(function () {
+					// $("#overview_side_menu").addClass("mm-active")
+				}, 300);
+			});
+
+		});
+
+		var top_bar_template = document.getElementById('top-bar-template');
+		// var side_bar_template = document.getElementById('side-bar-template');
+		//const divTopBar = document.getElementById('top-bar');
+
+		document.getElementById('top-bar').appendChild(
+			document.importNode(top_bar_template.content, true)
+		);
+
+	</script>
+
+	<script type="text/javascript" src="./assets/js/color.js"></script>
+
+	<script type="text/javascript" src="./assets/scripts/custom.js"></script>
+
+	<script type="text/javascript" src="./index.js"></script>
+
+
+</body>
+
+<script type="text/javascript" src="./assets/scripts/main.js"></script>
+<script type="text/javascript" src="./assets/scripts/master_algo.js"></script>
+
+</html>

@@ -1,0 +1,10 @@
+applications:
+- name: profiler
+  routes:
+    - route: <url of app>
+  path: .
+  memory: 128M
+  buildpacks:
+    - nodejs_buildpack
+  services:
+    - xsuaa-profiler-application

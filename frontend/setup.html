@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Profiler 2.0</title>
+    <link rel="shortcut icon" href="./assets/images/LTI_favicon.png">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description"
+        content="Wide selection of cards with multiple styles, borders, actions and hover effects.">
+    <meta name="msapplication-tap-highlight" content="no">
+    <link href="./main.css" rel="stylesheet">
+</head>
+<link href="./assets/css/custom.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="./assets/css/datatable.css" />
+<style>
+    .logo {
+        border-radius: 2px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+
+    .logo:hover {
+        opacity: 0.7;
+    }
+
+    .system-icon {
+        float: right;
+        padding-right: 15%;
+        opacity: 0.7;
+    }
+
+    .card-body:hover .system-icon {
+        opacity: 1;
+        transform: scale(1.5);
+    }
+
+    .client-title-grey {
+        padding-top: 1%;
+        background-image: radial-gradient(white, rgb(214, 214, 210), rgb(148, 148, 148));
+        margin: 0%;
+    }
+
+    .module-box {
+        width: 300px;
+        height: 100px;
+        border: 1px solid blue;
+        box-sizing: border-box;
+    }
+</style>
+<style>
+    .no-padding {
+        padding: 0px !important;
+    }
+
+    .top-margin30 {
+        margin-top: -30px !important;
+    }
+
+    .tile-icon {
+        font-size: 28px;
+        margin-right: 10px;
+    }
+
+    .logo-text {
+        font-size: 24px;
+        font-weight: bold;
+        font-family: monospace;
+    }
+
+    h5 {
+        /* text-shadow: 1px 1px #08090f; */
+        font-weight: 500;
+    }
+    h5:hover{
+        text-shadow: 0.5px 0.5px black;
+    }
+
+    .center-image {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .panel {
+        border-radius: 15px 35px 15px;
+        background: url(paper.gif)
+    }
+
+    .panel-1 {
+        border: 3px solid #2c2d8b;
+    }
+    .panel-2 {
+        border: 3px solid #2c2d8b;
+    }
+    .panel-3 {
+        border: 3px solid rgb(248, 108, 7);
+    }
+    .panel-4 {
+        border: 3px solid rgb(7, 22, 90);
+    }
+    .panel-5 {
+        border: 3px solid rgb(174, 21, 21);
+    }
+    .panel-6 {
+        border: 3px solid rgb(23, 57, 190);
+    }
+    .panel-7 {
+        border: 3px solid rgb(9, 84, 130);
+    }
+    .panel-8 {
+        border: 3px solid rgb(156, 230, 19);
+    }
+    .panel-9 {
+        border: 3px solid rgb(236, 8, 8);
+    }
+    .panel-10 {
+        border: 3px solid rgb(29, 106, 194);
+    }
+
+    .title{
+        font-weight: bold;
+        /* color: #3f6ad8; */
+        color: black;
+    }
+</style>
+
+
+<script src="./assets/js/apexcharts.js"></script>
+<script src="./assets/js/jquery.js"></script>
+<script type="text/javascript" src="./assets/js/datatable.min.js"></script>
+
+
+<script>
+    var _seed = 42
+    Math.random = function () {
+        _seed = (_seed * 16807) % 2147483647
+        return (_seed - 1) / 2147483646
+    }
+</script>
+
+<body>
+    <!-- Templates -->
+
+
+    <div class="app-container app-theme-white body-tabs-shadow fixed-header closed-sidebar-mobile">
+        <div id="top-bar"></div>
+
+        <div class="app-main">
+
+
+            <div class="app-main__outer">
+                <div class="app-main__inner">
+                    <div class="app-page-title no-bottom-margin ">
+                        <div class="page-title-wrapper">
+                            <div class="page-title-heading">
+                                <div class="page-title-icon">
+                                    <i class="fa fa-chart-bar icon-gradient bg-mean-fruit">
+                                    </i>
+                                </div>
+                                <div>Welcome to Profiler 2.0
+                                    <div class="page-title-subheading">First step towards Digital Transformation
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="tab-content">
+                        <div class="tab-pane tabs-animation fade active show" id="home" role="tabpanel">
+
+
+                            <div class="tab-pane tabs-animation fade active show" id="" role="tabpanel">
+
+                                <div class="row">
+                                    <div class="col-lg-4 col-xl-2 col-sm-6 col-md-4 " style="cursor: pointer;"
+                                        onclick="window.open('./client_system.html?client_name=SIEMENS')">
+                                        <div class="card text-center shadow-lg mb-3 panel panel-1" style="padding: 10px 0px;">
+                                            <div class="card-body text-primary">
+                                                <img class="logo center-image"
+                                                    src="./assets/images/ClientLogos/siemens.png" alt="SIEMENS Logo"
+                                                    style="width:-webkit-fill-available;margin-top: 8%;margin-bottom: 8%;">
+                                            </div>
+                                        </div>
+                                        <div class="text-center title">
+                                            <h5>SIEMENS</h5>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                
+                    </div>
+
+
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+
+
+    <script type="text/javascript" src="./assets/scripts/custom.js"></script>
+
+
+    <script type="text/javascript" src="./assets/js/color.js"></script>
+    <!-- property file -->
+    <script type="text/javascript" src="./assets/resources/property.property"></script>
+</body>
+
+<script>
+
+    $('#top-bar').load("username_header.html");
+</script>
+<script type="text/javascript" src="./assets/scripts/main.js"></script>
+
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJa4zMM9j675fz2D218xv_mP-rbLA_6H0&callback=initMap">
+    </script>
+
+</html>
